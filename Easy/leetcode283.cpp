@@ -26,6 +26,7 @@ public:
 *右指针左边直到左指针处均为零。
 *因此每次交换，都是将左指针的零与右指针的非零数交换，且非零数的相对顺序并未改变。
 */
+//实际上与我的做法类似，我的做法中count实际上就是左指针，但答案比较好，不需要比较left和right
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
@@ -35,7 +36,7 @@ public:
                 swap(nums[left], nums[right]);  //交换两个数可以用swap函数
                 left++;
             }
-            right++;
+            right++;    //只要遇到0，则right和left就会分开
         }
     }
 };
