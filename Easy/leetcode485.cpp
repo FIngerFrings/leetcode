@@ -3,7 +3,7 @@ class Solution {
 public:
     int findMaxConsecutiveOnes(vector<int>& nums) {
         int maxCount = 0, count = 0;
-        int n = nums.size();
+        int n = nums.size();                //对于容器vector，可以使用方法size得到容器当前大小
         for (int i = 0; i < n; i++) {
             if (nums[i] == 1) {
                 count++;
