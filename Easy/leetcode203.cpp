@@ -16,9 +16,9 @@
 class Solution {
   public:
   ListNode* removeElements(ListNode* head, int val) {
-    ListNode* sentinel = new ListNode(0);
+    ListNode* sentinel = new ListNode(0); //只有当声明的指针是个新的地址地址时才使用new，而如果像下面的prev和curr一样声明之后马上就会赋值一个已经存在了的地址时，就不用使用new
     sentinel->next = head;  //head在这里更像是指向链表第一个结点的指针，而不是头结点（我理解的头结点是一个结点，结点中的next指针指向链表第一个结点）
-
+    //因为toDelete一开始并不指向谁，所以设置为nullptr
     ListNode *prev = sentinel, *curr = head, *toDelete = nullptr; //之前会有一种思维惯性，就是将指向结点的指针看成一个结点，但从这题来看，应该就单纯的把它看成一个指针
     while (curr != nullptr) {
       if (curr->val == val) {
@@ -27,7 +27,7 @@ class Solution {
       } else prev = curr;
 
       curr = curr->next;
-
+      //因为每次toDelete都会被赋值为nullptr，所以这里需要判断一下是否为空指针，如果是空指针则也不用删除了，其实我是更偏向于让toDelete在上面一个if语句中删除的
       if (toDelete != nullptr) {
         delete toDelete;
         toDelete = nullptr;
