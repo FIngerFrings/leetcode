@@ -29,6 +29,7 @@ class Solution {
 
       curr = curr->next;
       //因为每次toDelete都会被赋值为nullptr，所以这里需要判断一下是否为空指针，如果是空指针则也不用删除了，其实我是更偏向于让toDelete在上面一个if语句中删除的
+      //这里实际上是不行的，因为如果在上面的if语句中删除了toDelete，则curr就会被删除
       if (toDelete != nullptr) {
         delete toDelete;
         toDelete = nullptr;
