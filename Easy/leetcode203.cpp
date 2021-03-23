@@ -11,6 +11,8 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+//在c++中是可以给结构体添加构造函数的
+//操作结点的方式一般都使用指针
 class Solution {
   public:
   ListNode* removeElements(ListNode* head, int val) {
