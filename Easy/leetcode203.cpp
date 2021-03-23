@@ -15,6 +15,7 @@
 //操作结点的方式一般都使用指针
 class Solution {
   public:
+  //head一般用来表示头指针
   ListNode* removeElements(ListNode* head, int val) {
     ListNode* sentinel = new ListNode(0); //只有当声明的指针是个新的地址地址时才使用new，而如果像下面的prev和curr一样声明之后马上就会赋值一个已经存在了的地址时，就不用使用new
     sentinel->next = head;  //head在这里更像是指向链表第一个结点的指针，而不是头结点（我理解的头结点是一个结点，结点中的next指针指向链表第一个结点）
