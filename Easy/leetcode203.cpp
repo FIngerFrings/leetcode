@@ -17,9 +17,9 @@ class Solution {
   public:
   ListNode* removeElements(ListNode* head, int val) {
     ListNode* sentinel = new ListNode(0);
-    sentinel->next = head;
+    sentinel->next = head;  //head在这里更像是指向链表第一个结点的指针，而不是头结点（我理解的头结点是一个结点，结点中的next指针指向链表第一个结点）
 
-    ListNode *prev = sentinel, *curr = head, *toDelete = nullptr;
+    ListNode *prev = sentinel, *curr = head, *toDelete = nullptr; //之前会有一种思维惯性，就是将指向结点的指针看成一个结点，但从这题来看，应该就单纯的把它看成一个指针
     while (curr != nullptr) {
       if (curr->val == val) {
         prev->next = curr->next;
