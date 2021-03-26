@@ -44,3 +44,42 @@ public:
 };
 //方法一使用的是双队列，其中新入队的元素放在队列二中，之后将队列一中的元素全部按顺序压入队列二，这样新入队的元素就可以先出队了，实际上队列二才是主要的队列，队列一只是辅助队列
 //使用这样的双队列就可以实现先进后出，即栈的功能
+//方法2：单队列
+class MyStack {
+public:
+    queue<int> q;
+    /** Initialize your data structure here. */
+    MyStack() {
+
+    }
+    
+    /** Push element x onto stack. */
+    void push(int x) {
+        int n = q.size();
+        q.push(x);
+        for(int i = 0; i < n; i++){
+            int r = q.front();
+            q.pop();
+            q.push(r);
+        }
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        int r = q.front();
+        q.pop();
+        return r;
+    }
+    
+    /** Get the top element. */
+    int top() {
+        return q.front();
+    }
+    
+    /** Returns whether the stack is empty. */
+    bool empty() {
+        return q.empty();
+    }
+};
+
+//该方法使用单队列，实际上就是先将元素压入，后将前面n个元素弹出再一次压入
