@@ -28,7 +28,7 @@ public:
     /** Removes the element on top of the stack and returns that element. */
     int pop() {
         int r = q1.front();
-        q1.pop();
+        q1.pop();   //队列的pop操作并不会返回弹出的元素
         return r;
     }
     
