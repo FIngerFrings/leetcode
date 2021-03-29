@@ -60,3 +60,27 @@ public:
         return p;
     }
 };
+
+//方法三，方法同上，但这里对nums2是逆序遍历，如果栈为空，说明右边没有元素，则将-1插入哈希表
+//如果栈不为空，且当前元素大于栈顶元素，则将栈顶元素弹出，因为对于前面的元素，栈顶元素绝对不是下一个最大的数，所以可以直接弹出
+//每次都需要把当前元素压入栈中，一开始的while循环确保了从栈顶到栈底会是从大到小的顺序
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, int> hx;
+        vector<int> p;
+        stack<int> stk;
+        for(int i = nums2.size()-1; i >= 0; i--){
+            while(!stk.empty() && nums2[i] > stk.top()){
+                stk.pop();
+            }
+            hx[nums2[i]] = stk.empty()?-1:stk.top();    //利用三元操作符插入元素的方法记下来
+            stk.push(nums2[i]);
+        }
+
+        for(int i = 0; i < nums1.size(); i++){
+            p.push_back(hx[nums1[i]]);
+        }
+        return p;
+    }
+};
