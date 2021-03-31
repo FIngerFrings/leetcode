@@ -6,7 +6,7 @@
  *int peek() 返回队列开头的元素
  *boolean empty() 如果队列为空，返回 true ；否则，返回 false
 */
-//方法一，该方法使用两个栈，原理和用两个队列实现栈（leetcode225）相似
+//方法一，我的想法，该方法使用两个栈，原理和用两个队列实现栈（leetcode225）相似
 //主要是在压入的时候要注意，将stk1作为输出的栈，而stk2作为辅助栈
 //压入时，将stk1中的元素按顺序压入stk2，之后将输入的元素压入stk1中，之后再将stk2中的元素再依次压入stk1
 class MyQueue {
@@ -57,3 +57,42 @@ public:
  * int param_3 = obj->peek();
  * bool param_4 = obj->empty();
  */
+//方法二，答案，其实主要原理还是和方法一相同，但是方法一时间复杂度比较低
+class MyQueue {
+private:
+    stack<int> inStack, outStack;
+
+    void in2out() {
+        while (!inStack.empty()) {
+            outStack.push(inStack.top());
+            inStack.pop();
+        }
+    }
+
+public:
+    MyQueue() {}
+
+    void push(int x) {
+        inStack.push(x);
+    }
+
+    int pop() {
+        if (outStack.empty()) {
+            in2out();
+        }
+        int x = outStack.top();
+        outStack.pop();
+        return x;
+    }
+
+    int peek() {
+        if (outStack.empty()) {
+            in2out();
+        }
+        return outStack.top();
+    }
+
+    bool empty() {
+        return inStack.empty() && outStack.empty();
+    }
+};
