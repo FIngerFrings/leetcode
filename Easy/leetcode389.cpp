@@ -21,3 +21,18 @@ public:
         
     }
 };
+
+//方法二：求和，通过将s的字符串求和以及t的字符串求和，然后相减可以得到重复的字符
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        int as = 0, at = 0;
+        for(int i = 0; i < s.size(); i++){
+            as += s[i];
+        }
+        for(char ch : t){
+            at += ch;
+        }
+        return at - as;
+    }
+};
