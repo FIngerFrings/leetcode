@@ -36,3 +36,5 @@ public:
         return at - as;
     }
 };
+
+//方法三：位运算不是特别懂
