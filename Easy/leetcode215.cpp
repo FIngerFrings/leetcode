@@ -12,3 +12,39 @@ public:
         return nums[nums.size()-1];
     }
 };
+
+/* 方法二，官方答案，实际上也是使用堆的方法，但是是通过自己实现堆的功能，而不是用库函数*/
+class Solution {
+public:
+    void maxheapify(vector<int>& nums, int i, int heapsize){
+        int l = 2 * i + 1, r = 2 * i + 2, largest = i;
+        if(l < heapsize && nums[l] > nums[largest]){
+            largest = l;
+        }
+        if(r < heapsize && nums[r] > nums[largest]){
+            largest = r;
+        }
+        if(largest != i){
+            swap(nums[i], nums[largest]);
+            maxheapify(nums, largest, heapsize);
+        }
+    }
+
+    void buildmaxheap(vector<int>& nums, int heapsize){
+        //该函数初始化创建堆
+        for(int i = heapsize/2; i >= 0; i--){
+            maxheapify(nums, i, heapsize);
+        }
+    }
+
+    int findKthLargest(vector<int>& nums, int k) {
+        int heapsize = nums.size();
+        buildmaxheap(nums, heapsize);
+        for(int i = nums.size() - 1; i >= nums.size() - k + 1; i--){
+            swap(nums[0], nums[i]);
+            heapsize--;
+            maxheapify(nums, 0, heapsize);
+        }
+        return nums[0];
+    }
+};
