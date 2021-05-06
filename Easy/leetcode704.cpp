@@ -9,7 +9,7 @@ public:
                 return pivot;
             }
             else if(nums[pivot] > target){
-                r = pivot - 1;
+                r = pivot - 1;              //需要注意的是r或者l可以不是pivot，因为pivot已经不会是target了
             }
             else{
                 l = pivot + 1;
