@@ -43,7 +43,7 @@ public:
         int l = 0, r = m * n - 1;
         while(l <= r){
             int mid = (l + r) / 2;
-            int x = matrix[mid/n][mid%n];
+            int x = matrix[mid/n][mid%n];       //这样的使用方法要记住
             if(x < target){
                 l = mid + 1;
             }
