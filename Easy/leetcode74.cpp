@@ -34,3 +34,26 @@ public:
         return binary_search(row->begin(), row->end(), target);     //需要注意，row是个地址
     }
 };
+
+//方法三同样也是使用二分查找，但是这里只需要以此二分查找
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size(), n = matrix[0].size();
+        int l = 0, r = m * n - 1;
+        while(l <= r){
+            int mid = (l + r) / 2;
+            int x = matrix[mid/n][mid%n];
+            if(x < target){
+                l = mid + 1;
+            }
+            else if(x > target){
+                r = mid - 1;
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
+    }
+};
