@@ -18,3 +18,19 @@ public:
         return false;
     }
 };
+
+//方法二，使用二分查找，官方解法，下面的方法是使用两次二分查找
+//因为矩阵是按顺序排列的，所以可以先使用二分查找找出target会在哪一行，然后再在那一行使用二分查找
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        auto row = upper_bound(matrix.begin(), matrix.end(), target, [](const int& b, const vector<int> a)->bool{
+            return b < a[0];
+        });
+        if(row == matrix.begin()){
+            return false;
+        }
+        --row;
+        return binary_search(row->begin(), row->end(), target);
+    }
+};
