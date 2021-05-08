@@ -31,6 +31,6 @@ public:
             return false;
         }
         --row;
-        return binary_search(row->begin(), row->end(), target);
+        return binary_search(row->begin(), row->end(), target);     //需要注意，row是个地址
     }
 };
