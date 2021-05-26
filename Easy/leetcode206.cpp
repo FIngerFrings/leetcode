@@ -43,12 +43,12 @@ public:
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(!head || !head->next){
+        if(!head || !head->next){           //这里的第一个条件是判断head是否为空指针，如果为空，说明链表中没有结点，直接返回head。第二个条件是判断是否到达最后一个结点
             return head;
         }
         ListNode *newhead = reverseList(head->next);
         head->next->next = head;
-        head->next = nullptr;
+        head->next = nullptr;               //即使不是第一个结点，结点的next也会被置为nullptr，但是上一个结点会将他置为上一个结点
         return newhead;
     }
 };
