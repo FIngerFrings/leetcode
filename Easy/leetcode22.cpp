@@ -52,3 +52,41 @@ public:
         return result;
     }
 };
+
+//方法二：回溯法（虽然说是回溯法，但是我还是没有弄懂什么是回溯法。。。）
+//思路：实际上是对方法一的改进，我们并不需要将所有组合都找出来，而是只要在序列保持有效时才添加左或右括号。我们可以通过跟踪到目前为止放置的左括号和右括号的数目来做到这一点
+//如果左括号数量不大于n，我们添加一个左括号，如果右括号数量小于左括号，我们可以添加一个右括号
+class Solution {
+public:
+    void backtacking(vector<string> &result, string &current, int left, int right, int n){
+        if(current.size() == n*2){              //因为我们只有在序列有效时才添加括号，因此得到的所有组合都是有效的
+            result.push_back(current);
+            return;
+        }
+        
+        //如果左括号数量小于n就添加左括号，直到左括号个数为n
+        //之后再添加右括号，第一种情况就是前面n个全是左括号，后面n个全是右括号，然后递归就会将后面n个括号全部弹出
+        //弹出后面n个右括号后，再将最后一个左括号弹出，同时添加一个右括号
+        //之后因为左括号没到n个，因此还是会添加一个左括号，之后再全部添加左括号
+        //之后不断递归，可以得到所有有效的序列
+        if(left < n){                           
+            current += '(';
+            backtacking(result, current, left+1, right, n);
+            current.pop_back();
+        }
+
+        if(right < left){
+            current += ')';
+            backtacking(result, current, left, right+1, n);
+            current.pop_back();
+        }
+    }
+
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        string current;
+        backtacking(result, current, 0, 0, n);
+        return result;
+    }
+};
+//通过测试，方法二消耗的时间很少
