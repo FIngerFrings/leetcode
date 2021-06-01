@@ -10,7 +10,7 @@
 //说实话我想不出一种两对括号相交的情况，所以暂时认为只要最后balance=0且检测过程中balance不小于0就是满足条件的
 class Solution {
 public:
-    bool valid(const string &current){
+    bool valid(const string &current){      //在这里判断的时候最好加上const，以免修改current，而使用引用是为了提高效率
         int balance = 0;
         for(char str : current){
             if(str == '('){
@@ -26,7 +26,7 @@ public:
         return balance == 0;
     }
 
-    void generate_all(string &current, int n, vector<string> &result){
+    void generate_all(string &current, int n, vector<string> &result){      //这里的current不用加const是因为要修改它
         if(n == current.size()){
             if(valid(current)){
                 result.push_back(current);
