@@ -25,3 +25,25 @@ public:
     }
 };
 //这种方法真的很巧妙
+
+class Solution {
+public:
+    vector<int> t;
+    vector<vector<int>> result;
+    void dfs(int current, vector<int>& nums){
+        if(current == nums.size()){
+            result.push_back(t);
+            return;
+        }
+
+        t.push_back(nums[current]);
+        dfs(current+1, nums);
+        t.pop_back();
+        dfs(current+1, nums);
+    }
+
+    vector<vector<int>> subsets(vector<int>& nums) {
+        dfs(0, nums);
+        return result;
+    }
+};
