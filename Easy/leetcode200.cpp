@@ -44,3 +44,51 @@ public:
         return nums;
     }   
 };
+
+//方法二：广度优先算法
+//思路：同样首先也是要搜索值为1的元素，之后创建队列，将其上下左右中值为1的元素加入队列，然后将它们变为0.同时对它们的上下左右做同样的操作
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int nr = grid.size();
+        if(!nr) return 0;
+        int nc = grid[0].size();
+        int num = 0;
+
+        for(int r = 0; r < nr; r++){
+            for(int c = 0; c < nc; c++){
+                if(grid[r][c] == '1'){
+                    num++;
+                    grid[r][c] = '0';
+                    queue<pair<int, int>> q;            //可以不用直接将元素放入队列中，而是将其下标放入队列，如果是多个下标的情况可以使用pair
+                    q.push({r, c});
+                    while(!q.empty()){
+                        auto rc = q.front();
+                        q.pop();
+                        int row = rc.first;
+                        int col = rc.second;
+                        if(row - 1 >= 0 && grid[row-1][col] == '1'){
+                            q.push({row-1, col});
+                            grid[row-1][col] = '0';
+                        }
+                        if(row + 1 < nr && grid[row+1][col] == '1'){
+                            q.push({row+1, col});
+                            grid[row+1][col] = '0';
+                        }
+                        if(col - 1 >= 0 && grid[row][col-1] == '1'){
+                            q.push({row, col-1});
+                            grid[row][col-1] = '0';
+                        }
+                        if(col + 1 < nc && grid[row][col+1] == '1'){
+                            q.push({row, col+1});
+                            grid[row][col+1] = '0';
+                        }
+                    }
+                }
+            }
+        }
+        return num;
+    }
+};
+
+//和leetcode938中所想的一样，深度优先算法用递归，广度优先算法用while循环+队列
