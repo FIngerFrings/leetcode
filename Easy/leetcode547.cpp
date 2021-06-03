@@ -109,3 +109,34 @@ public:
         return circles;
     }
 };
+
+//方法二：深度优先算法
+//思路：采用深度优先算法，建立一个数组用来存放某个城市是否被访问过，之后遍历所有城市，对于一个没有被访问过的城市，访问所有与它相邻的城市，并访问与这些城市相邻的城市
+//这样就能将所有相邻的城市访问一遍，在访问的同时，记录有多少省份
+class Solution {
+public:
+    void dfs(vector<vector<int>>& isConnected, vector<int> &visited, int i){
+        int n = isConnected.size();
+        for(int j = 0; j < n; j++){
+            if(isConnected[i][j] == 1 && visited[j] == 0){
+                visited[j] = 1;
+                dfs(isConnected, visited, j);
+            }
+        }
+    }
+
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        if(!n)  return 0;
+        int num = 0;
+        vector<int> visited(n);
+        for(int i = 0; i < n; i++){
+            if(!visited[i]){
+                num++;
+                visited[i] = 1;
+                dfs(isConnected, visited, i);
+            }
+        }
+        return num;
+    }
+};
