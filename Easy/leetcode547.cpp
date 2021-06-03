@@ -129,7 +129,7 @@ public:
         int n = isConnected.size();
         if(!n)  return 0;
         int num = 0;
-        vector<int> visited(n);
+        vector<int> visited(n);     //vector这样的初始化方式是一开始没想到的
         for(int i = 0; i < n; i++){
             if(!visited[i]){
                 num++;
