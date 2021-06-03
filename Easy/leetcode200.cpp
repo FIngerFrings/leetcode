@@ -92,3 +92,93 @@ public:
 };
 
 //和leetcode938中所想的一样，深度优先算法用递归，广度优先算法用while循环+队列
+//方法三：并查集
+//思路：使用并查集，如果某个元素为1，就将其上下左右元素中为1的元素加入到同一个集合中，最后剩下几个集合，就有几块岛屿
+class UnionFind{
+public:
+    UnionFind(vector<vector<char>>& grid){
+        count = 0;      //一开始忘记初始化count，得到的结果总是不对
+        int nr = grid.size();
+        int nc = grid[0].size();
+
+        for(int i = 0; i < nr; i++){
+            for(int j = 0; j < nc; j++){
+                if(grid[i][j] == '1'){
+                    parent.push_back(i*nc+j);
+                    count++;
+                }
+                else{
+                    parent.push_back(-1);
+                }
+                rank.push_back(0);
+            }
+        }
+    }
+
+    int find(int i){
+        if(parent[i] != i){
+            parent[i] = find(parent[i]);
+        }
+        return parent[i];
+    }
+
+    void unit(int x, int y){
+        int rootx = find(x);
+        int rooty = find(y);
+        if(rootx == rooty){
+            return;
+        }
+
+        if(rank[rootx] < rank[rooty]){
+            swap(rootx, rooty);
+        }
+
+        parent[rooty] = rootx;
+        count--;
+        if(rank[rootx] == rank[rooty]){
+            rank[rootx]++;
+        }
+    }
+
+    int getcount(void){
+        return count;
+    }
+private:
+    vector<int> parent;
+    vector<int> rank;
+    int count;
+};
+
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int nr = grid.size();
+        if(!nr) return 0;
+        int nc = grid[0].size();
+
+        UnionFind q(grid);
+
+        for(int r = 0; r < nr; r++){
+            for(int c = 0; c < nc; c++){
+                if(grid[r][c] == '1'){
+                    grid[r][c] = '0';
+                    if(r - 1 >= 0 && grid[r-1][c] == '1'){
+                        q.unit(r*nc+c, (r-1)*nc+c);
+                    }
+                    if(r + 1 < nr && grid[r+1][c] == '1'){
+                        q.unit(r*nc+c, (r+1)*nc+c);
+                    } 
+                    if(c - 1 >= 0 && grid[r][c-1] == '1'){
+                        q.unit(r*nc+c, r*nc+c-1);
+                    } 
+                    if(c + 1 < nc && grid[r][c+1] == '1'){
+                        q.unit(r*nc+c, r*nc+c+1);
+                    } 
+                }
+            }
+        }
+        return q.getcount();
+    }
+};
+
+//想这种需要分类的可以使用并查集
