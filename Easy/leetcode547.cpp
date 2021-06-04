@@ -140,3 +140,35 @@ public:
         return num;
     }
 };
+
+//方法三：广度优先算法
+//思路同样是使用while和队列实现
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        if(!n)  return 0;
+        int num = 0;
+        vector<int> visited(n);
+        queue<int> q;
+        for(int i = 0; i < n; i++){
+            if(visited[i] == 0){
+                num++;
+                visited[i] = 1;
+                q.push(i);
+                while(!q.empty()){
+                    auto node = q.front();
+                    q.pop();
+                    for(int j = 0; j < n; j++){
+                        if(visited[j] == 0 && isConnected[node][j] == 1){
+                            visited[j] = 1;
+                            q.push(j);
+                        }
+                    }
+                }
+
+            }
+        }
+        return num;
+    }
+};
