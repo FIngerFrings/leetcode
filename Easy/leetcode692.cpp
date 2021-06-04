@@ -49,3 +49,38 @@ public:
 
     }
 };
+
+//方法二：优先队列
+//思路：首先同样也是记录每个单词出现的频率，然后将其放入优先队列，优先级根据先频率后大小决定
+//优先队列的大小就设置成k个，且优先队列设置成小顶堆，当个数超了就弹出队首元素
+//最后剩下的k个元素就是前k个高频词汇
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string, int> frequceny;
+        for(auto &word : words){
+            frequceny[word]++;
+        }
+                
+        //这里确实没想到，没看错应该就是lambda表达式，但是这里将他赋值给了一个变量
+        auto cmp = [](const pair<string, int> &a, const pair<string, int> &b){
+            return a.second == b.second ? a.first < b.first : a.second > b.second;
+        };
+        //同时初始化队列竟然还要这个变量
+        priority_queue<pair<string, int>, vector<pair<string, int>>, decltype(cmp)> q(cmp);
+        //unordered_map里面的元素竟然就是pair组成的
+        for(auto &it : frequceny){
+            q.push(it);
+            if(q.size() > k){
+                q.pop();
+            }
+        }
+        
+        vector<string> ret(k);
+        for(int i = k - 1; i >= 0; i--){
+            ret[i] = q.top().first;
+            q.pop();
+        }
+        return ret;
+    }
+};
