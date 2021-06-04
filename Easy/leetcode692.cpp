@@ -29,3 +29,23 @@ public:
         return result;
     }
 };
+//下面是官方解法，实际上思路和上面是一样的，不过上面的代码比较看得懂
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string, int> q;
+        for(string word : words){
+            q[word]++;
+        }
+        vector<string> res;
+        for(auto &[key, value] : q){
+            res.emplace_back(key);
+        }
+        sort(res.begin(), res.end(), [&](const string &a, const string &b)->bool{
+            return q[a] == q[b] ? a < b : q[a] > q[b];
+        });
+        res.erase(res.begin()+k, res.end());
+        return res;
+
+    }
+};
