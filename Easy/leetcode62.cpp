@@ -26,3 +26,18 @@ public:
         return q[m-1][n-1];
     }
 };
+
+//方法二：组合数字
+//思路:从左上角到右下角的过程中，我们需要移动 m+n-2m+n−2 次，其中有 m-1m−1 次向下移动，n-1n−1 次向右移动。因此路径的总数，
+//就等于从 m+n-2m+n−2 次移动中选择 m-1m−1 次向下移动的方案数，即组合数：C(m-1)(m+n-1).具体公式看解答
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        long long ans = 1;
+        for (int x = n, y = 1; y < m; ++x, ++y) {
+            ans = ans * x / y;
+        }
+        return ans;
+    }
+};
+//这种解法时间很快
