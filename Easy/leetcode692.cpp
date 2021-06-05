@@ -87,7 +87,7 @@ public:
 
 
 //方法三：前缀树
-//思路：使用前缀树代替上面的map，不过会出错，我觉得整个逻辑是没问题的，但是不知道问题在哪
+//思路：使用前缀树代替上面的map，不过会出错，我觉得整个逻辑是没问题的，但是不知道问题在哪（最后发现问题出在没有对vector<string> ans初始化）
 class Trie{
 public:
     vector<Trie *> children;
@@ -128,7 +128,7 @@ public:
         }
         
         dfs(root, k);
-        vector<string> ans;
+        vector<string> ans(k);          //这里忘记加上(k)了
         for(int i = k - 1; i >= 0; i--){
             ans[i] = q.top().second;
             q.pop();
@@ -152,7 +152,7 @@ public:
     }
 };
 
-//别惹写的前缀树方法
+//别人写的前缀树方法
 struct TrieNode{
     bool  isEnd;
     TrieNode* branch[26];
