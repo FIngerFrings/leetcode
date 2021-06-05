@@ -36,3 +36,36 @@ public:
         return *max_element(q.begin(), q.end());
     }
 };
+
+//方法三：一次遍历
+//思路：整体的思路同样也是计算第i天卖出能获得的最大利润，用一个变量来保存第i天之前的最小值，同时比较最小值买入，今天卖出所获得的利润和历史最大利润
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        int minprice = prices[0];
+        int maxp = 0;
+        for(int i = 0; i < n; i++){
+            maxp = max(maxp, prices[i] - minprice);
+            minprice = min(prices[i], minprice);
+        }
+        return maxp;
+    }
+};
+//上下两种方法更改了for循环中的两句赋值语句，上面是官方的，下面是我觉得应该这么写的
+//不同点在于官方解法是先比较历史最大利润和用今天的价格减去历史最低价格的差
+//这种方法今天的利润可能是负值，因为今天可能就是目前为止的最低价格，今天所能获得的最大利润应该是0，因为前面的价格都比今天大，相应的解法就是下面所写的那样
+//实际上仔细想想应该官方的解法比较对，股票应该是不能当天买当天卖的
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        int minprice = prices[0];
+        int maxp = 0;
+        for(int i = 0; i < n; i++){
+            minprice = min(prices[i], minprice);
+            maxp = max(maxp, prices[i] - minprice);
+        }
+        return maxp;
+    }
+};
