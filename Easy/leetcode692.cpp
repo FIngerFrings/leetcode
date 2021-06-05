@@ -84,3 +84,145 @@ public:
         return ret;
     }
 };
+
+
+//方法三：前缀树
+//思路：使用前缀树代替上面的map，不过会出错，我觉得整个逻辑是没问题的，但是不知道问题在哪
+class Trie{
+public:
+    vector<Trie *> children;
+    bool isEnd;
+    pair<int, string> show;
+    Trie():children(26){
+        //children.resize(26);
+        isEnd = false;
+        show.first = 0;
+    }
+
+    void insert(string word){
+        Trie *node = this;
+        for(char str : word){
+            if(node->children[str - 'a'] == nullptr){
+                node->children[str - 'a'] = new Trie;
+            }
+            node = node->children[str - 'a'];
+        }
+        node->isEnd = true;
+        node->show.first++;
+        node->show.second = word;
+    }
+};
+class Solution {
+public:
+    struct cmp{
+        bool operator() (const pair<int, string> &a, const pair<int, string> &b){
+            return a.first == b.first ? a.second < b.second : a.first > b.first;   
+        }
+    };
+
+    priority_queue<pair<int, string>, vector<pair<int, string>>, cmp> q;
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        Trie *root = new Trie;
+        for(string word : words){
+            root->insert(word);
+        }
+        
+        dfs(root, k);
+        vector<string> ans;
+        for(int i = k - 1; i >= 0; i--){
+            ans[i] = q.top().second;
+            q.pop();
+        }
+        return ans;
+    }
+
+    void dfs(Trie *root, int k){
+        if(root == nullptr) return;
+        if(root->isEnd){
+            q.push(root->show);
+            if(q.size() > k){
+                q.pop();
+            }
+        }
+        for(int i = 0; i < 26; i++){
+            if(root->children[i]!=nullptr){
+                dfs(root->children[i], k);
+            }
+        }
+    }
+};
+
+//别惹写的前缀树方法
+struct TrieNode{
+    bool  isEnd;
+    TrieNode* branch[26];
+    //int times;
+    //string s;
+    pair<int,string> show ;//存储字符串和出现次数
+    TrieNode():isEnd(false ){
+        show.first=0;
+        for(int i=0;i<26; i++){
+             branch[i]=nullptr;
+        }
+    }
+};
+
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        root=new TrieNode();
+        for(auto it:words){
+            insert(it);//建立字典树
+        }
+        K=k;
+        vector<string> res(k);
+        dfs(root);
+        for(int i=0; i<k; i++){//从堆中取数据
+            res[i]=p.top().second;
+            p.pop();
+        }
+        reverse(res.begin(),res.end()); //逆置
+        return res;
+    }
+     void insert(string &word){//构建字典树
+        TrieNode* node=root;
+
+        for(auto it:word){
+            if(node->branch[it-'a']==nullptr){
+                node->branch[it-'a']=new TrieNode();
+            }
+            node=node->branch[it-'a'];
+        }
+        node->isEnd=true;
+        node->show.first++;
+        node->show.second=word;
+    }
+
+    void dfs(TrieNode* root){
+        if(root==nullptr) return;
+        if(root->isEnd){//建立堆
+            p.push(root->show);
+            if(p.size()>K){
+                p.pop();
+            }
+        }  
+        for(int i=0; i<26; i++){//深搜
+            if(root->branch[i]!=nullptr){
+                dfs(root->branch[i]);
+            }
+        } 
+    }
+
+    struct comp{
+        bool operator()(pair<int,string> a, pair<int,string> b){
+            if(a.first>b.first) return true;//自己写的比较函数
+            if(a.first<b.first) return false;
+            if(a.second>=b.second) return false;
+            return true;
+        }
+    };
+private:
+    TrieNode* root;
+    int K;
+    priority_queue<pair<int,string>,vector<pair<int,string>>,  comp> p;
+};
