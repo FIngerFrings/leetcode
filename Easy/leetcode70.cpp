@@ -18,7 +18,7 @@ public:
         if(n == 1 || n == 2){
             return n;
         }
-        dp[0] = 0;
+        dp[0] = 0;  //dp[0]为1和0都行
         dp[1] = 1;
         dp[2] = 2;
         for(int i = 3; i < n + 1; i++){
