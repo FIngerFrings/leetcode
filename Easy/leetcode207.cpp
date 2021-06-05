@@ -42,4 +42,38 @@ public:
     }
 };
 
- 
+//方法二：拓扑排序+BFS
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> edges(numCourses);
+        vector<int> indeg(numCourses);
+        vector<int> ans;
+
+        for(auto &info : prerequisites){
+            edges[info[1]].push_back(info[0]);
+            indeg[info[0]]++;
+        }
+
+        queue<int> q;
+        for(int i = 0; i < numCourses; i++){
+            if(indeg[i] == 0){
+                q.push(i);
+            }
+        }
+
+        while(!q.empty()){
+            int j = q.front();
+            q.pop();
+            ans.push_back(j);
+            for(int k : edges[j]){
+                indeg[k]--;
+                if(indeg[k] == 0){
+                    q.push(k);
+                }
+            }
+        }
+
+        return ans.size() == numCourses;
+    }
+};
