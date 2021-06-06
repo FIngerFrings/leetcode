@@ -25,10 +25,10 @@ public:
                 return 1;
             }
             else{
-                minnum = min(minnum, minSquare(n-k)+1);
+                minnum = min(minnum, minSquare(n-k));
             }
         }
-        return minnum;
+        return minnum + 1;
     }
   
     int numSquares(int n) {
@@ -43,7 +43,8 @@ public:
 };
 
 //方法二：动态规划
-//思路：自己写的动态规划
+//思路：自己写的动态规划，根据上面的分析已经将问题分割并定义了状态，状态方程就是numSquare(n) = min(numSquare(n-k)+1)
+//同样也是先创建一个数组存放1~n的每个元素的最小平方数个数，然后根据状态方程得到当前元素的最小平方和个数
 class Solution {
 public:
     int numSquares(int n) {
@@ -73,6 +74,30 @@ public:
             }
         }
         return numSquare[n];
+    }
+};
+
+//看了官方解法后简化的动态规划，实际上并不需要判断某个元素是否为最小平方和，因为如果它是最小平方和，则肯定会有某个k，使得i-k=0，则dp[i-k]=dp[0]=0
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> dp(n+1);
+        dp[0] = 0;
+        vector<int> square;
+        for(int i = 1; i * i <= n; i++){
+            square.push_back(i * i);
+        }
+
+        for(int i = 1; i <= n; i++){
+            dp[i] = i;
+            for(int k : square){
+                if(i - k < 0){
+                    break;
+                }
+                dp[i] = min(dp[i], dp[i-k]+1);
+            }
+        }
+        return dp[n];
 
     }
 };
