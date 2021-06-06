@@ -30,7 +30,7 @@ public:
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
-        int max = amount + 1;
+        int max = amount + 1;           //因为最多的情况就是amount全部由1元组成，所以max不会超过amount
         vector<int> dp(amount+1, max);
         dp[0] = 0;
         for(int i = 1; i <= amount; i++){
