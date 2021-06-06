@@ -41,3 +41,38 @@ public:
         return minSquare(n);
     }
 };
+
+//方法二：动态规划
+//思路：自己写的动态规划
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> numSquare(n+1);
+        numSquare[0] = 0;
+        vector<int> square;
+        for(int i = 1; i * i <= n; i++){
+            square.push_back(i * i);
+        }
+
+        for(int i = 1; i <= n; i++){
+            int minnum = INT_MAX;
+            for(int k : square){
+                if(i - k < 0){
+                    break;
+                }
+                else if(i == k){
+                    numSquare[i] = 1;
+                    break;
+                }
+                else{
+                    minnum = min(minnum, numSquare[i-k]);
+                }
+            }
+            if(numSquare[i] != 1){
+                numSquare[i] =  minnum + 1;
+            }
+        }
+        return numSquare[n];
+
+    }
+};
