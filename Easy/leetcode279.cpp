@@ -24,7 +24,9 @@ public:
             else if(n == k){
                 return 1;
             }
-            minnum = min(minnum, minSquare(n-k)+1);
+            else{
+                minnum = min(minnum, minSquare(n-k)+1);
+            }
         }
         return minnum;
     }
