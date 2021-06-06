@@ -43,3 +43,30 @@ public:
         return dp[amount] == max ? -1 : dp[amount];
     }
 };
+
+//方法二：暴力解法，会超时
+//思路：同样和leetcode279相同
+class Solution {
+public:
+    int numAmount(vector<int>& coins, int amount, int max){
+        int num = max;
+        for(int k : coins){
+            if(k < amount){
+                num = min(numAmount(coins, amount - k, max) + 1, num);
+            }
+            else if(k == amount){
+                return 1;
+            }
+        }
+        return num;
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        int max = amount + 1;
+        int minnum = numAmount(coins, amount, max);
+        if(amount == 0){
+            return 0;
+        }
+        return minnum == max ? -1 : minnum;
+    }
+};
