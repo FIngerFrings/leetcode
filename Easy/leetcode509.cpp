@@ -57,3 +57,27 @@ public:
 };
 
 //两种动态规划其实原理是相同的
+
+//方法三：记忆化搜索
+//思路还是递归+动态规划，用一个数组来存放之前计算过的结果
+//但是这里我觉得记忆化搜索反而比较复杂，不过速度确实快
+class Solution {
+public:
+    vector<int> count;
+    int dp(int n){
+        if(count[n] != INT_MIN){
+            return count[n];
+        }
+        else{
+            count[n] = dp(n - 1) + dp(n - 2);
+        }
+        return count[n];
+    }
+    int fib(int n) {
+        count.resize(n + 1, INT_MIN);
+        if(n < 2)   return n;
+        count[0] = 0;
+        count[1] = 1;
+        return dp(n);
+    }
+};
