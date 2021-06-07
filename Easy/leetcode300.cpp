@@ -50,3 +50,42 @@ public:
         return sq.size();
     }
 };
+
+//下面是自己实现lower_bound
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> sq;
+        sq.push_back(nums[0]);
+        for(int i = 1; i < n; i++){
+            if(nums[i] > sq.back()){
+                sq.push_back(nums[i]);
+            }
+            else{
+                //sq[lower_bound(sq.begin(), sq.end(), nums[i]) - sq.begin()] = nums[i];
+                int l = 0, r = sq.size() - 1;
+                while(l < r){
+                    int mid = (l + r) / 2;
+                    if(sq[mid] > nums[i]){
+                        r = mid - 1;
+                    }
+                    else if(sq[mid] < nums[i]){
+                        l = mid + 1;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                if(sq[(l + r) / 2] < nums[i]){
+                    sq[(l + r) / 2 + 1] = nums[i];
+                }
+                else{
+                    sq[(l + r) / 2] = nums[i];
+                }
+                
+            }
+        }
+        return sq.size();
+    }
+};
