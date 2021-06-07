@@ -70,3 +70,41 @@ public:
         return minnum == max ? -1 : minnum;
     }
 };
+
+//方法三：记忆化搜索
+//思路：实际上就是暴力解法，或称为递归，然后配合一个数组实现的，数组用来存放之前计算的结果，如果在后面的计算中有用到，则直接拿来用
+//这样就不用重新计算了，减少了时间
+//实际上就是递归+动态规划
+class Solution {
+public:
+    vector<int> count;
+    
+    int dp( vector<int> &coins, int amount){
+        if(amount == 0){
+            return 0;
+        }
+        if(count[amount-1] != 0)    return count[ amount-1] ;
+        int minnum = INT_MAX;
+        for(int k : coins){
+            if(k <= amount){
+                int res = dp(coins, amount - k);
+                if(res != -1){
+                    minnum = min(res + 1, minnum);
+                }
+            }
+        }
+        if(minnum == INT_MAX){
+            count[ amount-1] = -1;
+        }
+        else{
+            count[ amount-1] = minnum;
+        }
+        return count[ amount-1];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        if(amount < 0)    return 0;
+        count.resize(amount);
+        return dp(coins, amount);
+    }
+};
+
