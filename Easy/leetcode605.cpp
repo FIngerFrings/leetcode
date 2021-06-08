@@ -37,3 +37,36 @@ public:
         return total >= n;
     }
 };
+
+//当记录的个数已经达到n时就可以直接返回true
+class Solution {
+public:
+    bool canPlaceFlowers(vector<int>& flowerbed, int n) {
+        int m = flowerbed.size();
+        if(m < n)  return false;
+        int total = 0;
+        int pre = -1;
+        for(int i = 0; i < m; i++){
+            if(flowerbed[i] == 1){
+                if(pre < 0){
+                    total += i/2;
+                }
+                else{
+                    total += (i - pre - 2) / 2;
+                }
+                pre = i;
+                if(total >= n){
+                    return true;
+                }
+            }
+        }
+        if(pre < 0){
+            total += (m + 1) / 2;
+        }
+        else{
+            total += (m - pre - 1) / 2;
+        }
+
+        return total >= n;
+    }
+};
