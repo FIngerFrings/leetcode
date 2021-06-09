@@ -6,6 +6,7 @@
 //方法一：贪心
 //思路：自己写的，首先对people进行排序，排序原则为身高高的在前面，如果身高一样，则k小的在前面
 //构造返回数组，遍历people，将people[i][j]插入到返回数组下标为[j]的位置
+//因为后面都是比当前元素小的，所以就算插入到前面也不会对当前元素有影响
 class Solution {
 public:
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
