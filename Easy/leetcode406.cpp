@@ -26,3 +26,30 @@ public:
         return ans;
     }
 };
+
+//同样也是贪心，不过排序从小到大
+//思路其实和上面的大同小异，首先对people排序，顺序为身高小的在前面，k大的在前面
+//然后遍历people，people[i][1]实际上就是当前空着的位置中的下标
+//本质还是因为先放身高小的人并不会影响身高高的人
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        int n = people.size();
+        sort(people.begin(), people.end(), [](const vector<int> &a, const vector<int> &b){
+            return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+        });
+        vector<vector<int>> ans(n);
+        for(int i = 0; i < n; i++){
+            int spaces = people[i][1] + 1;
+            for(int j = 0; j < n; j++){
+                if(ans[j].empty()){
+                    spaces--;
+                    if(spaces == 0){
+                        ans[j] = people[i];
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
