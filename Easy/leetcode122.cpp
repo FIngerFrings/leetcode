@@ -22,6 +22,7 @@ public:
 
 
 //方法二：动态规划
+//思路：每天交易结束后只可能存在手里有一支股票或者没有股票的状态。
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
