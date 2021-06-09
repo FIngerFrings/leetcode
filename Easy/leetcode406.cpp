@@ -26,6 +26,21 @@ public:
         return ans;
     }
 };
+//使用insert插入
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        int n = people.size();
+        sort(people.begin(), people.end(), [](const vector<int> &a, const vector<int> &b){
+            return a[0] == b[0] ? a[1] < b[1] : a[0] > b[0];
+        });
+        vector<vector<int>> ans;
+        for(int i = 0; i < n; i++){
+            ans.insert(ans.begin() + people[i][1], people[i]);
+        }
+        return ans;
+    }
+};
 
 //同样也是贪心，不过排序从小到大
 //思路其实和上面的大同小异，首先对people排序，顺序为身高小的在前面，k大的在前面
