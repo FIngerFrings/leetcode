@@ -5,8 +5,8 @@
 class Solution {
 public:
     bool judgeSquareSum(int c) {
-        if(c == 0)  return true;
-        long int i = 0;
+        if(c == 0)  return true;    
+        long int i = 0;     //如果溢出了可以使用long
         vector<long int> square;
         while(i*i <= c){
             square.push_back(i*i);
@@ -23,6 +23,42 @@ public:
             }
             else{
                 --r;
+            }
+        }
+        return false;
+    }
+};
+
+//官方给出的双指针，原理大体相同，但是比较简洁
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        long l = 0, r = (int)sqrt(c);           //如果下次遇到这种题可以使用sqrt
+        while(l <= r){
+            long sum = l*l + r*r;
+            if(sum == c){
+                return true;
+            }
+            else if(sum < c){
+                ++l;
+            }
+            else{
+                --r;
+            }
+        }
+        return false;
+    }
+};
+
+//方法二：sqrt解法
+//思路：可以先固定一个数，然后用c-i*i之后再sqrt，如果这个数是一个整数，则返回true
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        for(long i = 0; i * i <= c; i++){
+            double j = sqrt(c - i * i);
+            if(j == int(j)){        //可以用这个方法判断一个数是否是整数
+                return true;
             }
         }
         return false;
