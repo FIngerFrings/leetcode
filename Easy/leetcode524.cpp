@@ -105,3 +105,65 @@ public:
         return ans;
     }
 };
+
+//方法三：双指针
+//思路：首先对字典排序，长度长且字典序小的在前面
+//然后依次检查字典中的字符串是否是s的子串，如果是再比较长度和字典序，最后输出最长且字典序最小的字符串
+class Solution {
+public:
+    string findLongestWord(string s, vector<string>& dictionary) {
+        sort(dictionary.begin(), dictionary.end(), [](const string &a, const string &b){
+            return a.size() == b.size() ? a < b : a.size() > b.size();
+        });
+        string ans = "";
+        int maxsize = 0;
+        for(string str : dictionary){
+            int l = 0, r = 0;
+            while(l < str.size() && r < s.size()){
+                if(str[l] == s[r]){
+                    ++l;
+                }
+                ++r;
+            }
+            if(l == str.size()){
+                if(str.size() > maxsize){
+                    ans = str;
+                    maxsize = str.size();
+                }
+                else if(str.size() == maxsize && str < ans){
+                    ans = str;
+                }
+                
+            }
+        }
+        return ans;
+    }
+};
+//下面方法是不排序的
+class Solution {
+public:
+    string findLongestWord(string s, vector<string>& dictionary) {
+        string ans = "";
+        int maxsize = 0;
+        for(string str : dictionary){
+            int l = 0, r = 0;
+            while(l < str.size() && r < s.size()){
+                if(str[l] == s[r]){
+                    ++l;
+                }
+                ++r;
+            }
+            if(l == str.size()){
+                if(str.size() > maxsize){
+                    ans = str;
+                    maxsize = str.size();
+                }
+                else if(str.size() == maxsize && str < ans){
+                    ans = str;
+                }
+                
+            }
+        }
+        return ans;
+    }
+};
