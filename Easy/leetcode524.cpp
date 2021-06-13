@@ -40,3 +40,35 @@ public:
         return ans.empty() ? "" : ans;
     }
 };
+//方法一：暴力枚举（超出时间限制）
+//思路：列举出s所能组成的所有字符串，之后遍历dictionary，并选出最长字典序最小的字符串
+class Solution {
+public:
+    unordered_map<string, bool> q;
+    void generate(string s, int i, string prev){
+        if(i == s.size()){
+            q[prev] = true;
+            return;
+        }
+        generate(s, i+1, prev + s[i]);
+        generate(s, i+1, prev);
+    }
+
+    string findLongestWord(string s, vector<string>& dictionary) {
+        generate(s, 0, "");
+        int maxsize = 0;    //为什么这里不能用INT_MIN
+        string ans = "";
+        for(string str : dictionary){
+            if(q[str]){
+                if(str.size() > maxsize){
+                    ans = str;
+                    maxsize = str.size();
+                }
+                else if(str.size() == maxsize && str < ans){
+                    ans = str;
+                }
+            }
+        }
+        return ans;
+    }
+};
