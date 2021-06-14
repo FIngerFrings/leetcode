@@ -40,3 +40,21 @@ public:
         return l * l < x ? l : l - 1;
     }
 };
+
+//官方的二分查找，这种方法要记下来
+class Solution {
+public:
+    int mySqrt(int x) {
+        int l = 0, r = x, ans = -1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if ((long long)mid * mid <= x) {
+                ans = mid;
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
