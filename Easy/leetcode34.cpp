@@ -53,3 +53,31 @@ public:
         return q;
     }
 };
+
+//二分查找
+//思路：通过二分查找找到第一个等于target的下标和最后一个等于target的下标
+class Solution {
+public:
+    int binary_search(vector<int>& nums, int target, bool lower){
+        int l = 0, r = nums.size() - 1, ans = nums.size();
+        while(l <= r){
+            int mid = (l + r) / 2;
+            if(nums[mid] > target || (lower && nums[mid] >= target)){
+                ans = mid;
+                r = mid - 1;
+            }
+            else{
+                l = mid + 1;
+            }
+        }
+        return ans;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = binary_search(nums, target, true);
+        int r = binary_search(nums, target, false) - 1;
+        if(l <= r && nums[l] == target && nums[r] == target){
+            return {l, r};
+        }
+        return {-1, -1};
+    }
+};
