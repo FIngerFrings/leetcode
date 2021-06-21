@@ -46,3 +46,95 @@ public:
         return max_size;
     }
 };
+
+//方法二：用栈实现深度优先搜索
+//思路：用栈来实现深度优先算法，代码和广度优先算法的其实一样，只不过是queue换成了stack
+//需要注意的是queue的第一个元素是front，stack的第一个元素是top
+class Solution {
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int r = grid.size();
+        if(r == 0)  return 0;
+        int c = grid[0].size();
+        int max_size = 0;
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                if(grid[i][j] == 1){
+                    int cur = 0;
+                    stack<pair<int, int>> island;
+                    island.push({i, j});
+                    grid[i][j] = 0;
+                    while(!island.empty()){
+                        auto [row, cow] = island.top();
+                        island.pop();
+                        ++cur;
+                        if(row - 1 >= 0 && grid[row-1][cow] == 1){
+                            island.push({row-1, cow});
+                            grid[row-1][cow] = 0;
+                        }
+                        if(row + 1 < r && grid[row+1][cow] == 1){
+                            island.push({row+1, cow});
+                            grid[row+1][cow] = 0;
+                        }
+                        if(cow - 1 >= 0 && grid[row][cow-1] == 1){
+                            island.push({row, cow-1});
+                            grid[row][cow-1] = 0;
+                        }
+                        if(cow + 1 < c && grid[row][cow+1] == 1){
+                            island.push({row, cow+1});
+                            grid[row][cow+1] = 0;
+                        }
+                    }
+                    max_size = max(cur, max_size);
+                }
+            }
+        }
+        return max_size;
+    }
+};
+
+
+//方法三：广度优先算法
+//思路：和其他的广度优先算法一样，也是while+queue
+class Solution {
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int r = grid.size();
+        if(r == 0)  return 0;
+        int c = grid[0].size();
+        int max_size = 0;
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                if(grid[i][j] == 1){
+                    int cur = 0;
+                    queue<pair<int, int>> island;
+                    island.push({i, j});
+                    grid[i][j] = 0;
+                    while(!island.empty()){
+                        auto [row, cow] = island.front();
+                        island.pop();
+                        ++cur;
+                        if(row - 1 >= 0 && grid[row-1][cow] == 1){
+                            island.push({row-1, cow});
+                            grid[row-1][cow] = 0;
+                        }
+                        if(row + 1 < r && grid[row+1][cow] == 1){
+                            island.push({row+1, cow});
+                            grid[row+1][cow] = 0;
+                        }
+                        if(cow - 1 >= 0 && grid[row][cow-1] == 1){
+                            island.push({row, cow-1});
+                            grid[row][cow-1] = 0;
+                        }
+                        if(cow + 1 < c && grid[row][cow+1] == 1){
+                            island.push({row, cow+1});
+                            grid[row][cow+1] = 0;
+                        }
+                    }
+                    max_size = max(cur, max_size);
+                }
+            }
+        }
+        return max_size;
+    }
+};
