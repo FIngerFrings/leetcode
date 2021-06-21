@@ -147,7 +147,7 @@ class Solution {
 public:
     vector<int> dp;
     void dfs(vector<vector<int>>& isConnected, int i, int n){
-        for(int j = 0; j < n; j++){
+        for(int j = 0; j < n; j++){     //这里需要从0开始，不然当i=n-1时会出错
             if(isConnected[i][j] == 1 && dp[j] == 1){
                 dp[j] = 0;
                 dfs(isConnected, j, n);
@@ -164,6 +164,35 @@ public:
                 ++num;
                 dp[i] = 0;
                 dfs(isConnected, i, n);
+            }
+        }
+        return num;
+    }
+};
+
+//用栈实现深度优先算法
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        int num = 0;
+        vector<int> dp(n);
+        for(int i = 0; i < n; i++){
+            if(dp[i] == 0){
+                ++num;
+                stack<int> q;
+                q.push(i);
+                dp[i] = 1;
+                while(!q.empty()){
+                    auto j = q.top();
+                    q.pop();
+                    for(int k = 0; k < n; k++){
+                        if(isConnected[j][k] == 1 && dp[k] == 0){
+                            dp[k] = 1;
+                            q.push(k);
+                        }
+                    }
+                }
             }
         }
         return num;
