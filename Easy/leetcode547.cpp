@@ -113,6 +113,7 @@ public:
 //方法二：深度优先算法
 //思路：采用深度优先算法，建立一个数组用来存放某个城市是否被访问过，之后遍历所有城市，对于一个没有被访问过的城市，访问所有与它相邻的城市，并访问与这些城市相邻的城市
 //这样就能将所有相邻的城市访问一遍，在访问的同时，记录有多少省份
+//这实际上就是记忆化搜索了
 class Solution {
 public:
     void dfs(vector<vector<int>>& isConnected, vector<int> &visited, int i){
