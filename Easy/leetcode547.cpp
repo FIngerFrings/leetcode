@@ -141,6 +141,34 @@ public:
     }
 };
 
+//第二遍写的时候自己写的dfs
+class Solution {
+public:
+    vector<int> dp;
+    void dfs(vector<vector<int>>& isConnected, int i, int n){
+        for(int j = 0; j < n; j++){
+            if(isConnected[i][j] == 1 && dp[j] == 1){
+                dp[j] = 0;
+                dfs(isConnected, j, n);
+            }
+        }
+    }
+    
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        int num = 0;
+        dp.resize(n, 1);
+        for(int i = 0; i < n; i++){
+            if(dp[i] == 1){
+                ++num;
+                dp[i] = 0;
+                dfs(isConnected, i, n);
+            }
+        }
+        return num;
+    }
+};
+
 //方法三：广度优先算法
 //思路同样是使用while和队列实现
 class Solution {
