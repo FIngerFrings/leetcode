@@ -73,7 +73,7 @@ public:
     int climbStairs(int n) {
         vector<vector<long long>> ret = {{1, 1}, {1, 0}};
         vector<vector<long long>> res = matrixPow(ret, n);
-        return res[0][0];           //不知道为什么返回00
+        return res[0][0];          
     }
 };
 
