@@ -27,3 +27,53 @@ public:
         return dp[n];
     }
 };
+
+//上面的方法需要使用一个长度为n+1的数组来保存前面阶数楼梯的方法
+//但是实际上我们后面的数量并不依靠前面的数量，因此只需要2个变量来保存数量即可
+class Solution {
+public:
+    int climbStairs(int n) {
+        if(n < 3)   return n;
+        int r = 1, c = 2, temp;
+        for(int i = 3; i <= n; i++){
+            temp = r + c;
+            r = c;
+            c = temp;
+        }
+        return c;
+    }
+};
+
+//方法二：矩阵快速幂
+//思路：看解答
+class Solution {
+public:
+    vector<vector<long long>> multiply(vector<vector<long long>> &a, vector<vector<long long>> &b) {
+        vector<vector<long long>> c(2, vector<long long>(2));
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j];
+            }
+        }
+        return c;
+    }
+
+    vector<vector<long long>> matrixPow(vector<vector<long long>> a, int n) {
+        vector<vector<long long>> ret = {{1, 0}, {0, 1}};
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                ret = multiply(ret, a);
+            }
+            n >>= 1;
+            a = multiply(a, a);
+        }
+        return ret;
+    }
+
+    int climbStairs(int n) {
+        vector<vector<long long>> ret = {{1, 1}, {1, 0}};
+        vector<vector<long long>> res = matrixPow(ret, n);
+        return res[0][0];
+    }
+};
+
