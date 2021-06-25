@@ -53,3 +53,24 @@ public:
         return num;
     }
 };
+
+//方法三:动态规划
+//思路：如果nums[i] - nums[i-1] == nums[i-1] - nums[i-2]，则以nums[i]结尾的等差队列个数为以nums[i-1]结尾的等差队列个数+1
+//否则为0
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        int n = nums.size();
+        if(n < 3)   return 0;
+        vector<int> dp(n);
+        for(int i = 2; i < n; i++){
+            if(nums[i] - nums[i-1] == nums[i-1] - nums[i-2]){
+                dp[i] = dp[i-1] + 1;
+            }
+            else{
+                dp[i] = 0;
+            }
+        }
+        return accumulate(dp.begin(), dp.end(), 0);
+    }
+};
