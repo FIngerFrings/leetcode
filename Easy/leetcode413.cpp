@@ -74,3 +74,51 @@ public:
         return accumulate(dp.begin(), dp.end(), 0);
     }
 };
+
+//压缩空间后的dp
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        int n = nums.size();
+        if(n < 3)   return 0;
+        int pre1 = 0, curr;
+        int sum = 0;
+        for(int i = 2; i < n; i++){
+            if(nums[i] - nums[i-1] == nums[i-1] - nums[i-2]){
+                curr = pre1 + 1;
+                pre1 = curr;
+            }
+            else{
+                pre1 = 0;
+            }
+            sum += pre1;
+        }
+        return sum;
+    }
+};
+
+//方法四：递归
+//递归：从数组最后递归到前面，其实基本思路和动态规划差不多，只不过方向不一样
+class Solution {
+public:
+    int sum = 0;
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        Slices(nums, nums.size()-1);
+        return sum;
+    }
+
+    int Slices(vector<int>& nums, int i){
+        if(i < 2)   return 0;
+        int temp = 0;
+        //如果满足递归，则以当前元素结尾的等差数列个数为前一个元素的个数+1
+        //否则为0，但还是需要继续递归下去
+        if(nums[i] - nums[i-1] == nums[i-1] - nums[i-2]){
+            temp = 1 + Slices(nums, i-1);
+            sum += temp;
+        }
+        else{
+            Slices(nums, i-1);
+        }
+        return temp;
+    }
+};
