@@ -144,3 +144,36 @@ public:
         return dp;
     }
 };
+
+//优化后的动态规划
+//上面的方法会有很多重复计算，实际上只需要左上和右下两个方向即可
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, max(m, n)));
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(mat[i][j] == 0){
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(i - 1 >= 0)   dp[i][j] = min(dp[i][j], dp[i-1][j] + 1);
+                if(j - 1 >= 0)   dp[i][j] = min(dp[i][j], dp[i][j-1] + 1);
+            }
+        }
+
+        for(int i = m-1; i >= 0; i--){
+            for(int j = n - 1; j >= 0; j--){
+                if(i + 1 < m)   dp[i][j] = min(dp[i][j], dp[i+1][j] + 1);
+                if(j + 1 < n)   dp[i][j] = min(dp[i][j], dp[i][j+1] + 1);
+            }
+        }
+        return dp;
+    }
+};
