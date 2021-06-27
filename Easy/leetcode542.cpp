@@ -96,3 +96,51 @@ public:
         return ans;
     }
 };
+
+//方法三：动态规划
+//思路：对于数组中的某个元素，距离他最近的0只可能有4个方向，左上，左下，右上，右下
+//分别从四个方向朝对角遍历，例如从左上向左下遍历就可以求出那些最近0在其左上的元素的最小距离，所以4个方向可以得到所有元素的最近距离
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, max(m, n)));
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(mat[i][j] == 0){
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(i - 1 >= 0)   dp[i][j] = min(dp[i][j], dp[i-1][j] + 1);
+                if(j - 1 >= 0)   dp[i][j] = min(dp[i][j], dp[i][j-1] + 1);
+            }
+        }
+
+        for(int i = m-1; i >= 0; i--){
+            for(int j = 0; j < n; j++){
+                if(i - 1 >= 0)   dp[i][j] = min(dp[i][j], dp[i-1][j] + 1);
+                if(j + 1 < n)   dp[i][j] = min(dp[i][j], dp[i][j+1] + 1);
+            }
+        }
+
+        for(int i = 0; i < m; i++){
+            for(int j = n-1; j >= 0; j--){
+                if(i - 1 >= 0)   dp[i][j] = min(dp[i][j], dp[i-1][j] + 1);
+                if(j + 1 < n)   dp[i][j] = min(dp[i][j], dp[i][j+1] + 1);
+            }
+        }
+
+        for(int i = m-1; i >= 0; i--){
+            for(int j = n - 1; j >= 0; j--){
+                if(i + 1 < m)   dp[i][j] = min(dp[i][j], dp[i+1][j] + 1);
+                if(j + 1 < n)   dp[i][j] = min(dp[i][j], dp[i][j+1] + 1);
+            }
+        }
+        return dp;
+    }
+};
