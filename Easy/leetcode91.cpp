@@ -42,7 +42,7 @@ public:
 };
 
 //官方的动态规划，比较简洁，强
-//直接从首个元素开始，原理其实和上面一样，就不做过多简洁
+//直接从首个元素开始，原理其实和上面一样，就不做过多简介
 class Solution {
 public:
     int numDecodings(string s) {
