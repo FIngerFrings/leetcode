@@ -54,3 +54,28 @@ public:
 };
 //这道题的贪心点在于每次都选择区间尾最小且和前面没有重叠的区间，实际上也是一种贪心吧
 //在想这道题的时候，应该去思考最后的区间应该是什么样的，首先去确定最左边的区间，然后逐个再去确定最左边的区间
+
+//方法二：动态规划
+//思路：这题可以反过来想，要想去掉最少的区间，实际上就是留下最多的区间
+//首先同样也是将所有区间排序，dp数组存放第i个区间作为最后一个区间时，最多能有多少个区间
+//dp[i]就是它前面与它不重叠的所有区间中dp最大值+1
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        if(n < 2)  return 0;
+        sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b){
+            return a[0] < b[0];
+        });
+        vector<int> dp(n, 1);
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i; j++){
+                if(intervals[i][0] >= intervals[j][1]){
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        return n - *max_element(dp.begin(), dp.end());
+    }
+};
+
