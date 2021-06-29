@@ -108,3 +108,49 @@ public:
     }
 };
 
+//方法三：动态规划（完全背包问题）
+//思路：这实际上是一个完全背包问题
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        if(n == 0)  return 0;
+        vector<vector<int>> dp(n+1, vector<int>(amount+1, amount+1));
+        for(int i = 0; i <= n; i++){
+            dp[i][0] = 0;
+        }
+
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= amount; j++){
+                if(coins[i-1] > j){
+                    dp[i][j] = dp[i-1][j];
+                }
+                else{
+                    dp[i][j] = min(dp[i-1][j], dp[i][j-coins[i-1]] + 1);
+                }
+            }
+        }
+        return (dp[n][amount] == amount+1) ? -1 : dp[n][amount];
+    }
+};
+
+//压缩空间后的完全背包问题的动态规划
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        if(n == 0)  return 0;
+        vector<int> dp(amount+1, amount+1);
+        dp[0] = 0;
+
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= amount; j++){
+                if(coins[i-1] > j){
+                    continue;
+                }
+                dp[j] = min(dp[j], dp[j-coins[i-1]] + 1);
+            }
+        }
+        return (dp[amount] == amount+1) ? -1 : dp[amount];
+    }
+};
