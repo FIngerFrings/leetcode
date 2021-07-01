@@ -36,3 +36,44 @@ public:
         return max(dp[n-1][0], dp[n-1][1]);
     }
 };
+
+//压缩空间的动态规划
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1)  return 1;
+        if(n == 2)  return nums[0] != nums[1] ? 2 : 1;
+        int down = 1;
+        int up = 1;
+        for(int i = 1; i < n; i++){
+            if(nums[i] > nums[i-1]){
+                up = max(up, down + 1);
+            }
+            else if(nums[i] < nums[i-1]){
+                down = max(down, up + 1);
+            }
+        }
+        return max(up, down);
+    }
+};
+
+//方法二：贪心算法
+//思路：实际上我们只需要计算有多少个峰和谷就可以算法最长子序列了
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int n = nums.size();
+        if(n < 2)   return n;
+        int prediff = nums[1] - nums[0];
+        int ret = prediff != 0 ? 2 : 1;
+        for(int i = 2; i < n; i++){
+            int diff = nums[i] - nums[i-1];
+            if((diff > 0 && prediff <= 0) || (diff < 0 && prediff >= 0)){
+                ++ret;
+                prediff = diff;
+            }
+        }
+        return ret;
+    }
+};
