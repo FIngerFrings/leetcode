@@ -59,3 +59,104 @@ public:
         return dp[m][n];
     }
 };
+
+//压缩空间后的动态规划
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        int m = word1.size();
+        int n = word2.size();
+        vector<vector<int>> dp(2, vector<int>(n+1));
+        dp[0][0] = 0;
+        for(int i = 0; i <= n; i++){
+            dp[0][i] = i;
+        }
+        for(int i = 1; i <= m; i++){
+            for(int j = 0; j <= n; j++){
+                if(j == 0){
+                    dp[1][j] = i;
+                }
+                else if(word1[i-1] != word2[j-1]){
+                    dp[1][j] = min(dp[0][j], dp[1][j-1]) + 1;
+                }
+                else{
+                    dp[1][j] = dp[0][j-1];
+                }
+            }
+            dp[0] = dp[1];
+        }
+        return dp[1][n];
+    }
+};
+
+//方法二：最长公共子序列
+//思路：我们可以求出word1和word2的最长公共子序列的长度，最小步数就是word1.size() + word2.size() - 2 * 最小公共子序列长度
+//这里是使用了动态规划求的最长公共子序列
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        int m = word1.size();
+        int n = word2.size();
+        vector<vector<int>> dp(m+1, vector<int>(n+1));
+        for(int i = 1; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                if(word1[i-1] != word2[j-1]){
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                }
+                else{
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+            }
+        }
+        return m + n - 2 * dp[m][n];
+    }
+};
+
+//上面是使用动态规划得到的最长公共子序列长度，下面的方法使用递归得到最长子序列的长度
+//但是会超时
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        return word1.size() + word2.size() - 2 * getmaxlength(word1, word2, word1.size(), word2.size());
+    }
+
+    int getmaxlength(string word1, string word2, int m, int n){
+        if(m == 0 || n == 0){
+            return 0;
+        }
+        int maxlength;
+        if(word1[m-1] != word2[n-1]){
+            maxlength = max(getmaxlength(word1, word2, m-1, n), getmaxlength(word1, word2, m, n-1));
+        }
+        else{
+            maxlength = getmaxlength(word1, word2, m-1, n-1) + 1;
+        }
+        return maxlength;
+    }
+};
+
+//上面会超时的原因是递归的过程中做了很多重复的计算，所以使用记忆化搜索减少时间
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int minDistance(string word1, string word2) {
+        int m = word1.size();
+        int n = word2.size();
+        dp.resize(m+1, vector<int>(n+1));
+        return m + n - 2 * getmaxlength(word1, word2, m, n);
+    }
+
+    int getmaxlength(string word1, string word2, int m, int n){
+        if(m == 0 || n == 0){
+            return 0;
+        }
+        if(dp[m][n] > 0)    return dp[m][n];
+        if(word1[m-1] != word2[n-1]){
+            dp[m][n] = max(getmaxlength(word1, word2, m-1, n), getmaxlength(word1, word2, m, n-1));
+        }
+        else{
+            dp[m][n] = getmaxlength(word1, word2, m-1, n-1) + 1;
+        }
+        return dp[m][n];
+    }
+};
