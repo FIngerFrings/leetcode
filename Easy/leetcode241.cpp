@@ -27,3 +27,34 @@ public:
         return ans;
     }
 };
+
+//使用哈希表存放之前的计算结果，提高了速度，依然使用的是分治法
+//但实际上我觉得是记忆化搜索
+class Solution {
+public:
+    unordered_map<string, vector<int>> m;
+    vector<int> diffWaysToCompute(string expression) {
+        vector<int> ans;
+        if(m.count(expression)) return m[expression];
+        for(int i = 0; i < expression.size(); i++){
+            char c = expression[i];
+            if(c == '+' || c == '-' || c == '*'){
+                vector<int> left = diffWaysToCompute(expression.substr(0, i));
+                vector<int> right = diffWaysToCompute(expression.substr(i+1));
+                for(int &l : left){
+                    for(int &r : right){
+                        switch(c){
+                            case '+': ans.push_back(l+r);   break;
+                            case '-': ans.push_back(l-r);   break;
+                            case '*': ans.push_back(l*r);   break;
+                        }
+                    }
+                }
+            }
+        }
+        if(ans.empty()) ans.push_back(stoi(expression));
+        m[expression] = ans;
+        return ans;
+
+    }
+};
