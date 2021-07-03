@@ -22,3 +22,33 @@ public:
         return ans;
     }
 };
+
+//同样是模拟计算，一开始的思路也确实是这个，但是之前没写出来.看pdf后写出来了
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int m = num1.size();
+        int n = num2.size();
+        if(m <= n){
+            swap(m, n);
+            swap(num1, num2);
+        }
+        int add = 0;
+        string ans = "";
+        reverse(num1.begin(), num1.end());
+        reverse(num2.begin(), num2.end());
+        for(int i = 0; i < n; i++){
+            int curr_sum = (num1[i] - '0') + (num2[i] - '0') + add;
+            ans += (curr_sum % 10 + '0');
+            add = curr_sum / 10;
+        }
+        for(int i = n; i < m; i++){
+            int curr_sum = num1[i] - '0' + add;
+            ans += (curr_sum % 10 + '0');
+            add = curr_sum / 10;
+        }
+        if(add) ans += '1';
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
