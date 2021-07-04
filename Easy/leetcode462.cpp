@@ -36,3 +36,48 @@ public:
         return num;
     }
 };
+
+
+//方法二：快速选择寻找中位数
+//思路：其实和上面一样，不过使用的是快速选择找到中位数，关于快速选择可以看leetcode215的官方解答
+class Solution {
+public:
+    int getk(vector<int>& nums, int k, int l, int r){
+        int q = randomPartition(nums, l, r);
+        if(q == k){
+            return nums[q];
+        }
+        else{
+            return q < k ? getk(nums, k, q + 1, r) : getk(nums, k, l, q - 1);
+        }
+    }
+
+    int randomPartition(vector<int>& nums, int l, int r){
+        int i = rand() % (r - l + 1) + l;
+        swap(nums[i], nums[r]);
+        return Partition(nums, l, r);
+    }
+
+    int Partition(vector<int>& nums, int l, int r){
+        int x = nums[r], i = l - 1;
+        for(int j = l; j < r; j++){
+            if(nums[j] <= x){
+                swap(nums[++i], nums[j]);
+            }
+        }
+        swap(nums[i+1], nums[r]);
+        return i + 1;
+    }
+
+    int minMoves2(vector<int>& nums) {
+        srand(time(0));
+        int n = nums.size();
+        int k = (n + 1) / 2 - 1;
+        int x = getk(nums, k, 0, n - 1);
+        long num = 0;
+        for(int i = 0; i < n; i++){
+            num += abs(nums[i] - x);
+        }
+        return num;
+    }
+};
