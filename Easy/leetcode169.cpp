@@ -85,3 +85,25 @@ public:
         return maxnumelement(nums, 0, nums.size()-1);
     }
 };
+
+//方法五：Boyer-Moore 投票算法
+//思路：核心思想就是将多数看成+1，其他数看成-1，则所有数相加结果必然大于等于0
+//证明不好证明，详细看官方解答
+//这种方法时间复杂度为O(n)，空间复杂度为O(1)
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int candidate = -1;
+        int count = 0;
+        for(int num : nums){
+            if(num == candidate){
+                ++count;
+            }
+            else if(--count < 0){
+                candidate = num;
+                count = 1;
+            }
+        }
+        return candidate;
+    }
+};
