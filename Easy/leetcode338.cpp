@@ -76,3 +76,29 @@ public:
         return ans;
     }
 };
+
+//方法四：动态规划 + 最低有效位（就是方法二）
+//思路：对于偶数，将它右移1位，1的个数不变，而对于奇数，将其右移1位，1的个数-1
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int> ans(n + 1);
+        for(int i = 1; i <= n; i++){
+            ans[i] = ans[i >> 1] + (i & 1);
+        }
+        return ans;
+    }
+};
+
+//方法五：动态规划 + 最低设置位
+//思路：i & (i - 1) 可以将最后1位1去掉，因此ans[i] = ans[i & (i - 1)] + 1;
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int> ans(n + 1);
+        for(int i = 1; i <= n; i++){
+            ans[i] = ans[i & (i - 1)] + 1;
+        }
+        return ans;
+    }
+};
