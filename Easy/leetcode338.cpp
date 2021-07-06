@@ -22,6 +22,28 @@ public:
     }
 };
 
+//也可以通过n &= (n - 1)将最低位的1去掉从而计算1的个数
+class Solution {
+public:
+    int getbit(int n){
+        int num = 0;
+        while(n){
+            ++num;
+            n &= (n - 1);
+        }
+        return num;
+    }
+    vector<int> countBits(int n) {
+        vector<int> ans(n + 1);
+        ans[0] = 0;
+        if(n == 0)  return ans;
+        for(int i = 1; i <= n; i++){
+            ans[i] = getbit(i);
+        }
+        return ans;
+    }
+};
+
 //方法二：动态规划 + 位运算
 //思路：如果1个数的最后一位是1，则dp[i] = dp[i-1] + 1，如果最后1位是0，则dp[i] = dp[i >> 1]
 class Solution {
@@ -35,5 +57,22 @@ public:
             dp[i] = (i & 1) ? dp[i-1] + 1 : dp[i >> 1];
         }
         return dp;
+    }
+};
+
+//方法三：动态规划 + 最高有效位
+//思路：i的1的个数是将它最高位1去掉后的数的1的位数+1，因此可以计算每个数的最高有效位，并将i-最高有效位得到的1的个数+1就是i的1的位数
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int> ans(n + 1);
+        int highbit = 0;
+        for(int i = 1; i <= n; i++){
+            if((i & (i - 1)) == 0){
+                highbit = i;
+            }
+            ans[i] = ans[i - highbit] + 1;
+        }
+        return ans;
     }
 };
