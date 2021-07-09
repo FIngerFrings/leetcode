@@ -73,3 +73,32 @@ public:
         return ans;
     }
 };
+
+//方法三：单调栈
+//思路：用一个栈来保存没有找到第一个比它温度高的下标，从前往后遍历数组
+//首先肯定会压入第一天的下标，因为现在还不知道距离第一个温度比他高的日子是什么时候
+//当遍历到第二天时，如果它的温度高于当前栈顶元素所代表的温度（这里实际上就是第一天），则可以得到第一天的结果
+//如果比它小，则直接结束循环，将当天压入栈中
+//整个栈所代表的温度肯定是不断减小的，因为如果栈内有一天的温度高于它前面的温度，则前面那个下标肯定会被弹出
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        stack<int> index;
+        vector<int> ans(n);
+        for(int i = 0; i < n; i++){
+            while(!index.empty()){
+                auto t = index.top();
+                if(temperatures[t] < temperatures[i]){
+                    ans[t] = i - t;
+                    index.pop();
+                }
+                else{
+                    break;
+                }
+            }
+            index.push(i);
+        }
+        return ans;
+    }
+};
