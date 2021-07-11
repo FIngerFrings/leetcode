@@ -130,7 +130,7 @@ public:
                 }
                 else{
                     root = root->right;
-                    pre->right = nullptr;
+                    pre->right = nullptr;           //这里估计是为了不破坏二叉树的形状，我觉得实际上并不影响结果
                 }
             }
             else{
