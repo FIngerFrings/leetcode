@@ -72,3 +72,57 @@ public:
         return ans;
     }
 };
+
+//方法三：morris遍历
+//思路：略
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void addPath(vector<int> &ans, TreeNode *node){
+        int count = 0;
+        while(node != nullptr){
+            ans.push_back(node->val);
+            ++count;
+            node = node->right;
+        }
+        reverse(ans.end() - count, ans.end());
+    }
+
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        TreeNode *p1 = root;
+        TreeNode *p2 = nullptr;
+        while(p1 != nullptr){
+            if(p1->left != nullptr){
+                p2 = p1->left;
+                while(p2->right != nullptr && p2->right != p1){
+                    p2 = p2->right;
+                }
+                if(p2->right == nullptr){
+                    p2->right = p1;
+                    p1 = p1->left;
+                }
+                else{
+                    p2->right = nullptr;
+                    addPath(ans, p1->left);
+                    p1 = p1->right;
+                }
+            }
+            else{
+                p1 = p1->right;
+            }
+        }
+        addPath(ans, root);
+        return ans;
+    }
+};
