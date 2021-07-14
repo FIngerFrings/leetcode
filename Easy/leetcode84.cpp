@@ -40,3 +40,42 @@ public:
         return ans;
     }
 };
+
+//方法二：单调栈
+//思路：实际上的思路还是遍历每根柱子，依次将每根柱子的高度作为矩形的高度，然后去寻找左边和右边离他最近且比他小的柱子
+//这样就能知道范围是多少了，从而求出矩形面积，之后选出最大值即可
+//问题的关键就在于如何找出离他最近且小于他的柱子，我们可以使用单调栈，也不太说得清为什么，直接看代码吧
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        vector<int> left(n), right(n);
+
+        stack<int> stk;
+
+        for(int i = 0; i < n; i++){
+            if(!stk.empty() && heights[stk.top()] > heights[i]){
+                stk.pop();
+            }
+            left[i] = (stk.empty()) ? -1 : stk.top();
+            stk.push(i);
+        }
+
+        stk = stack<int>();
+        for(int i = n-1; i >= 0; i--){
+            if(!stk.empty() && heights[stk.top()] > heights[i]){
+                stk.pop();
+            }
+            right[i] = (stk.empty()) ? n : stk.top();
+            stk.push(i);
+        }
+
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            ans = max(ans, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return ans;
+
+
+    }
+};
