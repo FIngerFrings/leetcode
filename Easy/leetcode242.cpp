@@ -46,3 +46,55 @@ public:
         return true;
     }
 };
+
+//其实只需要两次for循环即可
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.size() != t.size())    return false;
+        vector<int> nums(26, 0);
+        for(int i = 0; i < s.size(); i++){
+            nums[s[i] - 'a'] += 1;
+            nums[t[i] - 'a'] -= 1;
+        }
+        for(int i = 0; i < 26; i++){
+            if(nums[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+//其实我觉得官方的暴力解法更好，其实也和上面差不多，都是两个for循环
+//官方的是在遍历t的时候，就判断是否有元素的个数小于0
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.size() != t.size())    return false;
+        unordered_map<char, int> hash;
+        for(int i = 0; i < s.size(); i++){
+            hash[s[i]] += 1;
+        }
+
+        for(int i = 0; i < s.size(); i++){
+            hash[t[i]] -= 1;
+            if(hash[t[i]] < 0){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+//方法二：排序
+//思路：可以对两个字符串排序，如果相等则说明两个字符串符合条件
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.size() != t.size())    return false;
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        return s == t;
+    }
+};
