@@ -144,3 +144,36 @@ public:
         return s.substr(begin, mlen);
     }
 };
+
+//方法三：中心扩展
+//思想：遍历s，以每个字符作为回文中心，找出其中最长的回文子串
+//注意要考虑回文子串长度为奇数和偶数两种情况
+class Solution {
+public:
+    pair<int, int> getlr(string s, int l, int r){
+        while(l >= 0 && r < s.size() && s[l] == s[r]){
+            --l;
+            ++r;
+        }
+        return {l + 1, r - 1};
+    }
+
+    string longestPalindrome(string s) {
+        int start = 0;
+        int end = 0;
+        for(int i = 0; i < s.size(); i++){
+            auto [left1, right1] = getlr(s, i, i);
+            auto [left2, right2] = getlr(s, i, i + 1);
+            if(right1 - left1 > end - start){
+                end = right1;
+                start = left1;
+            }
+
+            if(right2 - left2 > end - start){
+                end = right2;
+                start = left2;
+            }
+        }
+        return s.substr(start, end - start + 1);
+    }
+};
