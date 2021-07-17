@@ -100,3 +100,47 @@ public:
         
     }
 };
+
+//方法二：动态规划
+//思路：状态方程为dp[i][j] = dp[i+1][j-1] && s[i] == s[j]
+//详细见官方解答
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n = s.size();
+        if(n < 2)   return s;
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        for(int i = 0; i < n; i++){
+            dp[i][i] = true;
+        }
+
+        int mlen = 1;
+        int begin = 0;
+        //要注意迭代的顺序，如果按照正常动态规划的顺序，那么dp[i+1][j-1]会在dp[i][j]之后出现
+        //所以应该先从长度短到长的顺序动态规划
+        for(int L = 2; L <= n; L++){
+            for(int i = 0; i < n; i++){
+                int j = i + L - 1;
+                if(j >= n)  break;
+
+                if(s[i] != s[j]){
+                    dp[i][j] = false;
+                }
+                else{
+                    if(j - i < 3){
+                        dp[i][j] = true;
+                    }
+                    else{
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }
+
+                if(dp[i][j] && j - i + 1 > mlen){
+                    mlen = j - i + 1;
+                    begin = i;
+                }
+            }
+        }
+        return s.substr(begin, mlen);
+    }
+};
