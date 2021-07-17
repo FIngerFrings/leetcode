@@ -28,3 +28,74 @@ public:
         return count;
     }
 };
+
+//方法二：按字符分组
+//思路：可以计算每个连续的相同字符的个数，然后最后遍历个数
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        int ptr = 0;
+        int n = s.size();
+        vector<int> counts;
+        while(ptr < n){
+            char c = s[ptr];
+            int count = 0;
+            while(ptr < n && c == s[ptr]){
+                ++ptr;
+                ++count;
+            }
+            counts.push_back(count);
+        }
+        int ans = 0;
+        for(int i = 1; i < counts.size(); i++){
+            ans += min(counts[i], counts[i-1]);
+        }
+        return ans;
+    }
+};
+
+//节省空间的按字符分组
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        int ptr = 0;
+        int n = s.size();
+        int ans = 0;
+        int pre = 0;
+        while(ptr < n){
+            char c = s[ptr];
+            int count = 0;
+            while(ptr < n && c == s[ptr]){
+                ++ptr;
+                ++count;
+            }
+            ans += min(count, pre);
+            pre = count;
+        }
+        return ans;
+    }
+};
+
+//pdf上的解法，思路其实和按字符分组相同
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        int pre = 0;
+        int curr = 1;
+        int count = 0;
+        for(int i = 1; i < s.size(); i++){
+            if(s[i] == s[i-1]){
+                ++curr;
+            }
+            else{
+                pre = curr;
+                curr = 1;
+            }
+            if(pre >= curr){
+                count++;
+            }
+        }
+        return count;
+
+    }
+};
