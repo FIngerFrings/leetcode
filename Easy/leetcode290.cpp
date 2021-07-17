@@ -43,3 +43,32 @@ public:
         return true;
     }
 };
+
+//官方的解法，思想其实和我的相同，但是代码实现起来不同
+//它是遍历pattern（理论上确实遍历pattern会比较好，因为pattern数量比较少）
+//然后再去s中遍历
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        unordered_map<string, char> s2p;
+        unordered_map<char, string> p2s;
+        int pre = 0;
+        int n = s.size();
+        for(auto c : pattern){
+            //这个判断是为了当pattern中字符的个数大于s中单词的个数的情况
+            if(pre >= n){
+                return false;
+            }
+            int curr = pre;
+            while(curr < n && s[curr] != ' ')   ++curr;
+            string temp = s.substr(pre, curr - pre);
+            if(s2p.count(temp) && s2p[temp] != c)   return false;
+            if(p2s.count(c) && p2s[c] != temp)  return false;
+            s2p[temp] = c;
+            p2s[c] = temp;
+            pre = curr + 1;
+        }
+        //最后判断pre>=n是为了判断n是为了当s中单词个数大于pre中字符个数的情况
+        return pre >= n;
+    }
+};
