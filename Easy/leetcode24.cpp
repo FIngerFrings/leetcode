@@ -41,3 +41,60 @@ public:
         return head;
     }
 };
+
+//方法二：递归
+//思路：自己意会
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+
+        ListNode *newhead = head->next;
+        head->next = swapPairs(newhead->next);
+        newhead->next = head;
+        return newhead;
+    }
+};
+
+//方法二：迭代
+//思路：其实思路和暴力法差不多，但是代码却好很多
+//这种在链表之前加个新节点的方法需要学习
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode *dummynode = new ListNode(0);
+        dummynode->next = head;
+        ListNode *temp = dummynode;
+        while(temp->next != nullptr && temp->next->next != nullptr){
+            ListNode *node1 = temp->next;
+            ListNode *node2 = temp->next->next;
+            temp->next = node2;
+            node1->next = node2->next;
+            node2->next = node1;
+            temp = node1;
+        }
+        return dummynode->next;
+    }
+};
