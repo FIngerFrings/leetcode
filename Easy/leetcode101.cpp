@@ -53,11 +53,12 @@ public:
             q.pop();
             if(!u && !v)    continue;
             if(!u || !v)    return false;
+            if(u->val != v->val)    return false;
             q.push(u->right);
             q.push(v->left);
 
             q.push(u->left);
-            q.push(v->left);
+            q.push(v->right);
         }
         return true;
     }
