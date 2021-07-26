@@ -26,3 +26,43 @@ public:
         return symmetric(left->left, right->right) && symmetric(left->right, right->left);
     }
 };
+
+//方法二：迭代
+//思路：其实本质上还是和上面一样是一种双指针，不过这里使用队列实现
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool check(TreeNode* l, TreeNode* r){
+        queue<TreeNode *> q;
+        q.push(l);
+        q.push(r);
+        while(!q.empty()){
+            auto u = q.front();
+            q.pop();
+            auto v = q.front();
+            q.pop();
+            if(!u && !v)    continue;
+            if(!u || !v)    return false;
+            q.push(u->right);
+            q.push(v->left);
+
+            q.push(u->left);
+            q.push(v->left);
+        }
+        return true;
+    }
+
+    bool isSymmetric(TreeNode* root) {
+        return check(root, root);
+    }
+};
