@@ -111,3 +111,60 @@ public:
         swap(x->val, y->val);
     }
 };
+
+//方法三：moris中序遍历
+//思路：本质上和上面相同，不过就是使用moris实现中序遍历
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode *x = nullptr;
+        TreeNode *y = nullptr;
+        TreeNode *pre = nullptr;
+        while(root){
+            TreeNode *node = root->left;
+            if(node){
+                while(node->right != nullptr && node->right != root){
+                    node = node->right;
+                }
+
+                if(node->right == nullptr){
+                    node->right = root;
+                    root = root->left;
+                }
+                else{
+                    if(pre != nullptr && pre->val > root->val){
+                        y = root;
+                        if(x == nullptr){
+                            x = pre;
+                        }
+                    }
+                    node->right = nullptr;
+                    pre = root;
+                    root = root->right;
+                }
+            }
+            else{
+                if(pre != nullptr && pre->val > root->val){
+                    y = root;
+                    if(x == nullptr){
+                        x = pre;
+                    }
+                }
+                pre = root;
+                root = root->right;
+            }
+        }
+        swap(x->val, y->val);
+    }
+};
