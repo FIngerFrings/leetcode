@@ -116,3 +116,5 @@ public:
         return root;
     }
 };
+
+//方法二：
