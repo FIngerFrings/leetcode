@@ -60,3 +60,51 @@ public:
         return ans;
     }
 };
+
+//方法三：两次遍历
+//思路：略
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    vector<TreeNode *> getpath(TreeNode *root, TreeNode *q){
+        vector<TreeNode *> path;
+        TreeNode *node = root;
+        while(true){
+            path.push_back(node);
+            if(node->val > q->val){
+                node = node->left;
+            }
+            else if(node->val < q->val){
+                node = node->right;
+            }
+            else{
+                break;
+            }
+        }
+        return path;
+    }
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        vector<TreeNode *> q_path = getpath(root, q);
+        vector<TreeNode *> p_path = getpath(root, p);
+        TreeNode *ans = nullptr;
+        for(int i = 0; i < q_path.size() && i < p_path.size(); i++){
+            if(q_path[i] == p_path[i]){
+                ans = q_path[i];
+            }
+            else{
+                break;
+            }
+        }
+        return ans;
+    }
+};
