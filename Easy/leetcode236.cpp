@@ -43,3 +43,85 @@ public:
 
     }
 };
+
+
+//方法二：递归
+//思路：通过递归判断左子树或右子树中是否有两个节点，如果有则将ans置为root
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode *ans;
+
+    bool dfs(TreeNode *root, TreeNode *p, TreeNode *q){
+        if(root == nullptr) return false;
+
+        bool lson = dfs(root->left, p, q);
+        bool rson = dfs(root->right, p, q);
+
+        if((lson && rson) || (root->val == p->val || root->val == q->val) && (lson || rson)){
+            ans = root;
+        }
+
+        return lson || rson || (root->val == p->val || root->val == q->val);
+    }
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        dfs(root, p, q);
+        return ans;
+    }
+};
+
+//方法三：哈希表
+//思路：记录每个节点的父节点，然后从p节点开始不断向上，记录经过的节点，然后从q节点开始不断向上，查看p节点是否经过，首先查找的那个就是答案
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int, TreeNode *> hash;
+    unordered_map<int, bool> vis;
+    void dfs(TreeNode *root){
+        if(root->left){
+            hash[root->left->val] = root;
+            dfs(root->left);
+        }
+
+        if(root->right){
+            hash[root->right->val] = root;
+            dfs(root->right);
+        }
+    }
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        hash[root->val] = nullptr;
+        dfs(root);
+        TreeNode *ans;
+        while(p){
+            vis[p->val] = true;
+            p = hash[p->val];
+        }
+
+        while(q){
+            if(vis[q->val]){
+                ans = q;
+                break;
+            }
+            q = hash[q->val];
+        }
+        return ans;
+    }
+};
