@@ -23,8 +23,8 @@ public:
 };
 //官方的解法虽然也是二分查找，但是实际上比我们的更简单，它将两个问题结合到了一起
 //考虑这个插入的位置pos，它成立的条件为：nums[pos−1]<target≤nums[pos] 其中 nums 代表排序数组。由于如果存在这个目标值，
-//我们返回的索引也是pos因此我们可以将两个条件合并得出最后的目标：「在一个有序数组中找第一个大于等于 \textit{target}target 的下标」。
-//问题转化到这里，直接套用二分法即可，即不断用二分法逼近查找第一个大于等于 \textit{target}target 的下标 。
+//我们返回的索引也是pos因此我们可以将两个条件合并得出最后的目标：「在一个有序数组中找第一个大于等于 target 的下标」。
+//问题转化到这里，直接套用二分法即可，即不断用二分法逼近查找第一个大于等于 target 的下标 。
 //下文给出的代码是笔者习惯的二分写法，ans 初值设置为数组长度可以省略边界条件的判断，因为存在一种情况是target 大于数组中的所有数，
 //此时需要插入到数组长度的位置。
 //看上面的官方解释可能会不明白pos的选择，这是因为如果最后没有找到target，则target占据的位置应该是比它大的那个数的位置，所以实际上也就是要找出大于等于target的位置
@@ -43,5 +43,47 @@ public:
             }
         }
         return ans;
+    }
+};
+
+//规范写法：代码随想录左闭右闭
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1;
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if(nums[mid] > target){
+                r = mid - 1;
+            }
+            else if(nums[mid] < target){
+                l = mid + 1;
+            }
+            else{
+                return mid;
+            }
+        }
+        return r + 1;
+    }
+};
+
+//代码随想录左闭右开
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int l = 0, r = nums.size();
+        while(l < r){
+            int mid = l + ((r - l) >> 2);
+            if(nums[mid] > target){
+                r = mid;
+            }
+            else if(nums[mid] < target){
+                l = mid + 1;
+            }
+            else{
+                return mid;
+            }
+        }
+        return r;
     }
 };
