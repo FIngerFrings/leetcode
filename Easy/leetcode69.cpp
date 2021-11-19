@@ -60,6 +60,29 @@ public:
     }
 };
 
+//代码随想录二分法
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        if(num == 1)    return true;
+        int l = 0, r = num - 1;
+        while(l <= r){
+            long long mid = l + (r - l) / 2;
+            if(mid * mid > num){
+                r = mid - 1;
+            }
+            else if(mid * mid < num){
+                l = mid + 1;
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
+
+    }
+};
+
 //方法二：牛顿迭代法
 class Solution {
 public:
