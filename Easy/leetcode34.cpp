@@ -81,3 +81,53 @@ public:
         return {-1, -1};
     }
 };
+
+//二分查找规范解法
+class Solution {
+public:
+    int find_left(vector<int> &nums, int target){
+        int l = 0, r = nums.size() - 1;
+        int left = -2;
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if(nums[mid] < target){
+                l = mid + 1;
+            }
+            else{
+                r = mid - 1;
+                left = r;
+            }
+        }
+        return left;
+    }
+
+    int find_right(vector<int> &nums, int target){
+        int l = 0, r = nums.size() - 1;
+        int right = -2;
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if(nums[mid] > target){
+                r = mid - 1;
+            }
+            else{
+                l = mid + 1;
+                right = l;
+            }
+        }
+        return right;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int left = find_left(nums, target);
+        int right = find_right(nums, target);
+        if(left == -2 || right == -2){
+            return {-1, -1};
+        }
+        else if(right - left > 1){
+            return {left + 1, right - 1};
+        }
+        else{
+            return {-1, -1};
+        }
+    }
+};
