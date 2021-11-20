@@ -85,3 +85,25 @@ public:
         return (length == INT_MAX) ? 0 : length;
     }
 };
+
+//双指针，但是没上面的好，实际上并不需要判断l是否小于n
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int l = 0, r = 0;
+        int ans = n + 1, sum = 0;
+        while(l < n && r < n){
+            sum += nums[r];
+            while(sum >= target){
+                ans = min(ans, r - l + 1);
+                sum -= nums[l];
+                ++l;
+            }
+            if(r < n){
+                ++r;
+            }
+        }
+        return ans > n ? 0 : ans;
+    }
+};
