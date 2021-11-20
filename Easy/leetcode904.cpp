@@ -7,4 +7,28 @@
  * 你有两个篮子，每个篮子可以携带任何数量的水果，但你希望每个篮子只携带一种类型的水果。
  * 用这个程序你能收集的水果树的最大总量是多少？
  */
-//
+//方法一：滑动窗口
+//思路：利用哈希表记录当前收集的水果种类和数量，使用滑动窗口，如果滑动窗口内水果种类大于2时，则将滑动窗口的起始位置往右移动，直到水果种类减少
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        unordered_map<int, int> hash;
+        int n = fruits.size();
+        int ans = 0, len = 0;
+        int l = 0;
+        for(int r = 0; r < n; r++){
+            ++len;
+            hash[fruits[r]]++;
+            while(hash.size() > 2){
+                --hash[fruits[l]];
+                if(hash[fruits[l]] == 0){
+                    hash.erase(fruits[l]);
+                }
+                ++l;
+                --len;
+            }
+            ans = max(ans, len);
+        }
+        return ans;
+    }
+};
