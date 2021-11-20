@@ -87,6 +87,7 @@ public:
 };
 
 //双指针，但是没上面的好，实际上并不需要判断l是否小于n
+//其实可以改成for循环。。。
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
@@ -107,3 +108,5 @@ public:
         return ans > n ? 0 : ans;
     }
 };
+
+//上面双指针（滑动窗口）方法的时间复杂度为n，因为每个元素都只会被操作两次
