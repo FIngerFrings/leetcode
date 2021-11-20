@@ -35,3 +35,43 @@ public:
         return ans;
     }
 };
+
+//方法三：双指针
+//思路：类似归并排序，先找到正负的分界点，然后分别向前向后遍历，比较平方后的大小，然后插入数组中
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int n = nums.size();
+        int neg = -1;
+        for(int i = 0; i < n; i++){
+            if(nums[i] < 0){
+                neg = i;
+            }
+            else{
+                break;
+            }
+        }
+
+        int i = neg, j = neg + 1;
+        vector<int> ans;
+        while(i >= 0 || j < n){
+            if(i < 0){
+                ans.push_back(nums[j] * nums[j]);
+                ++j;
+            }
+            else if(j == n){
+                ans.push_back(nums[i] * nums[i]);
+                --i;
+            }
+            else if(nums[i] * nums[i] < nums[j] * nums[j]){
+                ans.push_back(nums[i] * nums[i]);
+                --i;
+            }
+            else{
+                ans.push_back(nums[j] * nums[j]);
+                ++j;
+            }
+        }
+        return ans;
+    }
+};
