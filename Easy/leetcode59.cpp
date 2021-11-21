@@ -47,3 +47,30 @@ public:
         return res;
     }
 };
+
+//方法二：模拟2
+//思路：同样是模拟，但是思路和方法一不同，该方法的思路和leetcode54的思路相同
+class Solution {
+public:
+    vector<vector<int>> direction{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> ans(n, vector<int>(n, 0));
+        vector<vector<bool>> visited(n, vector<bool>(n, false));
+
+        int i = 0, j = 0, p = 0;
+        for(int k = 1; k <= n * n; k++){
+            ans[i][j] = k;
+            visited[i][j] = true;
+            int nexti = i + direction[p][0], nextj = j + direction[p][1];
+            if(nexti < 0 || nexti >= n || nextj < 0 || nextj >= n || visited[nexti][nextj]){
+                p = (p + 1) % 4;
+            }
+
+            i += direction[p][0];
+            j += direction[p][1];
+        }
+
+        return ans;
+    }
+};
