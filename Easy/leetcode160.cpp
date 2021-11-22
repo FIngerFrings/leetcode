@@ -94,3 +94,57 @@ public:
         return l1;
     }
 };
+
+//方法三：代码随想录
+//思路：详细见代码随想录
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == nullptr || headB == nullptr){
+            return nullptr;
+        }
+
+        ListNode *l1 = headA;
+        ListNode *l2 = headB;
+        int s1 = 0, s2 = 0;
+        while(l1 != nullptr){
+            ++s1;
+            l1 = l1->next;
+        }
+
+        while(l2 != nullptr){
+            ++s2;
+            l2 = l2->next;
+        }
+
+        l1 = headA, l2 = headB;
+
+        if(s2 > s1){
+            swap(s1, s2);
+            swap(l1, l2);
+        }
+
+        int gap = s1 - s2;
+        while(gap--){
+            l1 = l1->next;
+        }
+
+        while(l1 != nullptr){
+            if(l1 == l2){
+                return l1;
+            }
+            l1 = l1->next;
+            l2 = l2->next;
+        }
+
+        return nullptr;
+    }
+};
