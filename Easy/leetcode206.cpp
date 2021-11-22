@@ -81,30 +81,3 @@ public:
 //newhead实际上就是指向最后一个结点的地址，也就是反转后的头结点，它从最后一个结点一直返回到开头
 //需要注意的是，因为链表最后一个结点的next是nullptr，所以在代码中需要加上head->next=nullptr，否则返回到第一个节点时，它会指向第二个结点，从而形成了环
 //从上面两个方法可以看出，反转链表用的都是将结点的next指针改为指向前面一个结点，使用的方法可以是定义一个指针指向结点的前面一个结点，又或者是使用递归的方法
-
-//该方法创建了两个新的结点指针，一个用于表示新的链表，一个用于在head移动的时候保存前面的值
-//首先让ptr等于head，然后head往后移动，之后将ptr使用头插法插入到newhead中
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-class Solution {
-public:
-    ListNode* reverseList(ListNode* head) {
-        ListNode *newhead = nullptr;
-        ListNode *ptr = head;
-        while(head != nullptr){
-            ptr = head;
-            head = head->next;
-            ptr->next = newhead;
-            newhead = ptr;
-        }
-        return newhead;
-    }
-};
