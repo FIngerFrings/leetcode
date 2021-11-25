@@ -50,3 +50,43 @@ public:
         return -1;
     }
 };
+
+//方法二：KMP算法
+class Solution {
+public:
+    void getNext(vector<int> &next, string t){
+        int j = 0;
+        next[0] = j;
+        for(int i = 1; i < t.size(); i++){
+            while(j > 0 && t[i] != t[j]){
+                j = next[j-1];
+            }
+
+            if(t[i] == t[j]){
+                ++j;
+            }
+            next[i] = j;
+        }
+    }
+
+    int strStr(string haystack, string needle) {
+        if(needle.size() == 0)   return 0;
+        vector<int> next(needle.size());
+        int j = 0;
+        getNext(next, needle);
+        for(int i = 0; i < haystack.size(); i++){
+            while(j > 0 && haystack[i] != needle[j]){
+                j = next[j-1];
+            }
+
+            if(haystack[i] == needle[j]){
+                ++j;
+            }
+
+            if(j == needle.size()){
+                return i - needle.size() + 1;
+            }
+        }
+        return -1;
+    }
+};
