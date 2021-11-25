@@ -91,3 +91,63 @@ public:
         return s;
     }
 };
+
+//稍微有点修改
+class Solution {
+public:
+    void MySwap(string &s, int l, int r){
+        while(l < r){
+            swap(s[l], s[r]);
+            ++l;
+            --r;
+        }
+    }
+
+    void DelBlank(string &s){
+        int fast = 0, slow = 0;
+        while(s.size() > 0 && fast < s.size() && s[fast] == ' '){
+            ++fast;
+        }
+
+        for(; fast < s.size(); fast++){
+            if(fast > 0 && s[fast - 1] == s[fast] && s[fast] == ' '){
+                continue;
+            }
+
+            s[slow++] = s[fast];
+        }
+
+        if(slow > 0 && s[slow-1] == ' '){
+            s.resize(slow-1);
+        }
+        else{
+            s.resize(slow);
+        }
+    }
+
+    string reverseWords(string s) {
+        DelBlank(s);
+        MySwap(s, 0, s.size() - 1);
+        int start = 0, end = 0;
+        bool entry = false;
+        for(int i = 0; i < s.size(); i++){
+            if(!entry){
+                start = i;
+                entry = true;
+            }
+
+            if(entry && s[i] == ' '){
+                end = i - 1;
+                entry = false;
+                MySwap(s, start, end);
+            }
+
+            if(entry && i == s.size() - 1 && s[i] != ' '){
+                end = i;
+                entry = false;
+                MySwap(s, start, end);
+            }
+        }
+        return s;
+    }
+};
