@@ -44,3 +44,22 @@ public:
         }
     }
 };
+
+//代码随想录
+class Solution {
+public:
+    bool check(TreeNode *root, TreeNode *subRoot){
+        if(!root && !subRoot){
+            return true;
+        }
+        else if((!root || !subRoot) || (root->val != subRoot->val)){
+            return false;
+        }
+        return check(root->left, subRoot->left) && check(root->right, subRoot->right);
+    }
+
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if(!root)   return false;
+        return check(root, subRoot) || isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+    }
+};
