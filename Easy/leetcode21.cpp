@@ -39,6 +39,28 @@ public:
     }
 };
 
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode *dummyNode = new ListNode();
+        ListNode *ptr = dummyNode;
+        while(list1 && list2){
+            if(list1->val <= list2->val){
+                ptr->next = list1;
+                list1 = list1->next;
+            }
+            else{
+                ptr->next = list2;
+                list2 = list2->next;
+            }
+            ptr = ptr->next;
+        }
+
+        ptr->next = list1 ? list1 : list2;
+        return dummyNode->next;
+    }
+};
+
 //方法二：递归
 //思路：略
 /**
@@ -83,5 +105,34 @@ public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         sx(l1, l2);
         return head;
+    }
+};
+
+class Solution {
+public:
+    void dfs(ListNode *ptr, ListNode *list1, ListNode *list2){
+        if(list1 && list2){
+            if(list1->val <= list2->val){
+                ptr->next = list1;
+                dfs(ptr->next, list1->next, list2);
+            }
+            else{
+                ptr->next = list2;
+                dfs(ptr->next, list1, list2->next);
+            }
+        }
+        else if(!list1 && !list2){
+            return;
+        }
+        else{
+            ptr->next = list1 ? list1 : list2;
+        }
+    }
+
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode *dummyNode = new ListNode();
+        ListNode *ptr = dummyNode;
+        dfs(ptr, list1, list2);
+        return dummyNode->next;
     }
 };
