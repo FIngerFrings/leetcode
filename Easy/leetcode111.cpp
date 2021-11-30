@@ -4,6 +4,7 @@
  * 说明：叶子节点是指没有子节点的节点。
  */
 //方法一：层序遍历
+//思路：根据层序遍历的遍历顺序，当我们找到第一个叶子节点的时候就直接返回当前的层数
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -39,18 +40,10 @@ public:
     }
 };
 
-//方法二：递归
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+//方法二：后序遍历+递归
+//思路：计算左子树和右子树的深度，取其中的最小值+1作为当前节点的最小深度
+//但是需要注意的是如果根据二叉树的最大深度修改代码则会错，因为如果当前节点没有左节点或者右节点，则得到的结果为1，但实际上这并不是结果
+//要左节点和右节点都为空时才能返回1
 class Solution {
 public:
     int minDepth(TreeNode* root) {
