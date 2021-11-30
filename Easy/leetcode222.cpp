@@ -48,3 +48,45 @@ public:
         return countNodes(root->left) + countNodes(root->right) + 1;
     }
 };
+
+//方法三：二分查找+位运算
+//思路：首先计算完全二叉树的高度，然后确定最后一层节点序号的范围，再使用二分查找查看到哪里就没有节点了
+//在使用二分查找时需要确定节点是否存在，我们可以使用位运算，因为最下面一层的需要去掉最高位1后，根据后面的位，0向左，1向右移动，最后可以到达对应节点
+class Solution {
+public:
+    bool exist(TreeNode *root, int height, int mid){
+        int p = 1 << (height - 1);
+        TreeNode *node = root;
+        while(node != nullptr && p > 0){
+            if(p & mid){
+                node = node->right;
+            }
+            else{
+                node = node->left;
+            }
+            p >>= 1;
+        }
+        return node != nullptr;
+    }
+
+    int countNodes(TreeNode* root) {
+        if(root == nullptr) return 0;
+        int height = 0;
+        TreeNode *node = root;
+        while(node->left != nullptr){
+            ++height;
+            node = node->left;
+        }
+        int low = 1 << height, high = (1 << (height + 1)) - 1;
+        while(low < high){
+            int mid = low + (high - low + 1) / 2;
+            if(exist(root, height, mid)){
+                low = mid;
+            }
+            else{
+                high = mid - 1;
+            }
+        }
+        return low;
+    }
+};
