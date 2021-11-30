@@ -5,24 +5,12 @@
  */
 //方法一：递归
 //思路：计算左子树和右子树上的深度，取最大值+1就是当前节点的深度
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     int getheight(TreeNode *root){
         if(root == nullptr){
             return 0;
         }
-
         return max(getheight(root->right), getheight(root->left)) + 1;
     }
 
@@ -32,41 +20,20 @@ public:
 };
 
 //直接使用当前函数递归
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     int maxDepth(TreeNode* root) {
         if(root == nullptr){
             return 0;
         }
-
         return max(maxDepth(root->left), maxDepth(root->right)) + 1;
     }
 };
 
-//方法二：广度优先
-//思路：使用优先队列和while循环
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+//上面递归实际上是后序遍历二叉树，先遍历左子树，然后遍历右子树，最后访问当前节点
+
+//方法二：广度优先（层序遍历）
+//思路：使用层序遍历，每遍历一层就将结果+1，直到最后一层得到深度
 class Solution {
 public:
     int maxDepth(TreeNode* root) {
@@ -85,5 +52,35 @@ public:
             ++depth;
         }
         return depth;
+    }
+};
+
+//前序遍历 + 递归
+//思路：实际上就是通过前序遍历遍历所有节点，让每个节点都知道自己在哪一层，然后记录最大的层数就是深度
+class Solution {
+public:
+    int ans;
+    void maxDepthHelper(TreeNode *root, int depth){
+        ans = max(ans, depth);
+        if(root->left == nullptr && root->right == nullptr){
+            return;
+        }
+
+        if(root->left != nullptr){
+            maxDepthHelper(root->left, depth + 1);
+        }
+
+        if(root->right != nullptr){
+            maxDepthHelper(root->right, depth + 1);
+        }
+
+        return;
+    }
+
+    int maxDepth(TreeNode* root) {
+        ans = 0;
+        if(root == nullptr) return ans;
+        maxDepthHelper(root, 1);
+        return ans;
     }
 };
