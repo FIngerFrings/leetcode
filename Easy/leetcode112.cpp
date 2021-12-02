@@ -49,3 +49,25 @@ public:
         return hasPathSum(root->left, targetSum - root->val) || hasPathSum(root->right, targetSum - root->val);
     }
 };
+
+//方法二：迭代
+//思路：其实和递归一样
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if(root == nullptr) return false;
+        queue<pair<TreeNode*, int>> q;
+        q.push(pair<TreeNode*, int>(root, targetSum));
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+            if(!node.first->left && !node.first->right && node.second - node.first->val == 0){
+                return true;
+            }
+
+            if(node.first->left)  q.push(pair<TreeNode*, int>(node.first->left, node.second-node.first->val));
+            if(node.first->right)  q.push(pair<TreeNode*, int>(node.first->right, node.second-node.first->val));
+        }
+        return false;
+    }
+};
