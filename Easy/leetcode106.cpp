@@ -81,3 +81,41 @@ public:
         return buildTreehepler(0, n - 1, inorder, postorder);
     }
 };
+
+//代码随想录递归
+class Solution {
+public:
+    TreeNode* buildTreeHelper(vector<int> &inorder, int inorderBegin, int inorderEnd, vector<int> &postorder, int postorderBegin, int postorderEnd){
+        if(inorderBegin == inorderEnd)  return nullptr;
+
+        int rootVal = postorder[postorderEnd - 1];
+        TreeNode* root = new TreeNode(rootVal);
+        if(inorderBegin + 1 == inorderEnd){
+            return root;
+        }
+
+        int index;
+        for(index = inorderBegin; index < inorderEnd; index++){
+            if(inorder[index] == rootVal)   break;
+        }
+
+        int leftInorderBegin = inorderBegin;
+        int leftInorderEnd = index;
+        int rightInorderBegin = index + 1;
+        int rightInorderEnd = inorderEnd;
+
+        int leftPostorderBegin = postorderBegin;
+        int leftPostorderEnd = postorderBegin + index - inorderBegin;
+        int rightPostorderBegin = leftPostorderEnd;
+        int rightPostorderEnd = postorderEnd - 1;
+
+        root->left = buildTreeHelper(inorder, leftInorderBegin, leftInorderEnd, postorder, leftPostorderBegin, leftPostorderEnd);
+        root->right = buildTreeHelper(inorder, rightInorderBegin, rightInorderEnd, postorder, rightPostorderBegin, rightPostorderEnd);
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if(inorder.size() == 0 || postorder.size() == 0)    return nullptr;
+        return buildTreeHelper(inorder, 0, inorder.size(), postorder, 0, postorder.size());
+    }
+};
