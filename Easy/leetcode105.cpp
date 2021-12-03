@@ -41,17 +41,6 @@ public:
 };
 
 //官方的解法，哈希表不应该当作形参
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
         unordered_map<int, int> q;
 public:
@@ -79,17 +68,6 @@ public:
     }
 };
 //这里将哈希表当作全局参数就不会超时了，pdf的解法
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
     unordered_map<int, int> dict;
 public:
@@ -117,4 +95,42 @@ public:
     }
 };
 
-//方法二：
+//方法二：代码随想录递归
+class Solution {
+public:
+    TreeNode* buildTreeHelper(vector<int> &preorder, int preorderBegin, int preorderEnd, vector<int> &inorder, int inorderBegin, int inorderEnd){
+        if(preorderBegin == preorderEnd){
+            return nullptr;
+        }
+
+        int rootVal = preorder[preorderBegin];
+        TreeNode* root = new TreeNode(rootVal);
+
+        if(preorderBegin + 1 == preorderEnd){
+            return root;
+        }
+
+        int index;
+        for(index = inorderBegin; index != inorderEnd; index++){
+            if(inorder[index] == rootVal)   break;
+        }
+
+        int leftInorderedBegin = inorderBegin;
+        int leftInorderedEnd = index;
+        int rightInorderedBegin = index + 1;
+        int rightInorderedEnd = inorderEnd;
+
+        int leftPreorderBegin = preorderBegin + 1;
+        int leftPreorderedEnd = leftPreorderBegin + index - inorderBegin;
+        int rightPreorderBegin = leftPreorderedEnd;
+        int rightPreorderEnd = preorderEnd;
+
+        root->left = buildTreeHelper(preorder, leftPreorderBegin, leftPreorderedEnd, inorder, leftInorderedBegin, leftInorderedEnd);
+        root->right = buildTreeHelper(preorder, rightPreorderBegin, rightPreorderEnd, inorder, rightInorderedBegin, rightInorderedEnd);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.size() == 0)    return nullptr;
+        return buildTreeHelper(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+    }
+};
