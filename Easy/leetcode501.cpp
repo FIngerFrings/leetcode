@@ -132,3 +132,56 @@ public:
         return ans;
     }
 };
+
+//代码随想录迭代
+//思路：同代码随想录递归
+class Solution {
+public:
+    vector<int> findMode(TreeNode* root) {
+        if(root == nullptr) return {};
+        stack<TreeNode*> stk;
+        int count = 0;
+        int maxCount = 0;
+        TreeNode* pre = nullptr;
+        stk.push(root);
+        vector<int> ans;
+        while(!stk.empty()){
+            auto node = stk.top();
+            stk.pop();
+            if(node != nullptr){
+                if(node->right) stk.push(node->right);
+
+                stk.push(node);
+                stk.push(nullptr);
+
+                if(node->left)  stk.push(node->left);
+            }
+            else{
+                node = stk.top();
+                stk.pop();
+                
+                if(pre == nullptr){
+                    count = 1;
+                }
+                else if(node->val == pre->val){
+                    ++count;
+                }
+                else{
+                    count = 1;
+                }
+
+                pre = node;
+
+                if(count == maxCount){
+                    ans.push_back(pre->val);
+                }
+                else if(count > maxCount){
+                    maxCount = count;
+                    ans.clear();
+                    ans.push_back(pre->val);
+                }
+            }
+        }
+        return ans;
+    }
+};
