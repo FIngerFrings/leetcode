@@ -1,15 +1,6 @@
 /* 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。 */
 //方法一：递归
 //思路：递归找出两个节点的路径，然后寻找其中的分叉点
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
     bool findpath(TreeNode *root, TreeNode *p, vector<TreeNode *> &path){
@@ -47,15 +38,6 @@ public:
 
 //方法二：递归
 //思路：通过递归判断左子树或右子树中是否有两个节点，如果有则将ans置为root
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
     TreeNode *ans;
@@ -123,5 +105,19 @@ public:
             q = hash[q->val];
         }
         return ans;
+    }
+};
+
+//代码随想录递归
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == p || root == q || root == nullptr)   return root;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        if(left && right)   return root;
+        else if(!left && !right) return nullptr;
+        else if(!left)  return right;
+        return left;
     }
 };
