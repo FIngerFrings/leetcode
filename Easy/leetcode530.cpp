@@ -35,4 +35,60 @@ public:
     }
 };
 
-//还有一种moris遍历这里就省略了
+//方法二：递归+中序遍历
+class Solution {
+public:
+    int ans;
+    TreeNode* pre = nullptr;
+
+    void dfs(TreeNode* root){
+        if(root == nullptr) return;
+
+        dfs(root->left);
+        if(pre != nullptr){
+            ans = min(ans, root->val - pre->val);
+        }
+        pre = root;
+        dfs(root->right);
+    }
+
+    int getMinimumDifference(TreeNode* root) {
+        ans = INT_MAX;
+        dfs(root);
+        return ans;
+    }
+};
+
+//方法二：迭代+中序遍历
+//思路：实际上同递归
+class Solution {
+public:
+    int getMinimumDifference(TreeNode* root) {
+        int ans = INT_MAX;
+        TreeNode* pre = nullptr;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty()){
+            auto node = stk.top();
+            if(node != nullptr){
+                stk.pop();
+                
+                if(node->right)  stk.push(node->right);
+                stk.push(node);
+                stk.push(nullptr);
+                if(node->left)  stk.push(node->left);
+            }
+            else{
+                stk.pop();
+                node = stk.top();
+                stk.pop();
+
+                if(pre != nullptr){
+                    ans = min(ans, node->val - pre->val);
+                }
+                pre = node;
+            }
+        }
+        return ans;
+    }
+};
