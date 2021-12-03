@@ -33,145 +33,100 @@ public:
     }
 };
 
-//方法二：广度优先
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+//后来自己写的递归，不太好看
 class Solution {
 public:
     TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
-        if(!root1){
-            return root2;
+        if(root1 == nullptr && root2 == nullptr)    return nullptr;
+        else if(root1 != nullptr && root2 != nullptr){
+            TreeNode* root = new TreeNode(root1->val + root2->val);
+            root->left = mergeTrees(root1->left, root2->left);
+            root->right = mergeTrees(root1->right, root2->right);
+            return root;
         }
-        else if(!root2){
+        else if(root1 != nullptr){
             return root1;
         }
-
-        queue<TreeNode *> q;
-        queue<TreeNode *> q1;
-        queue<TreeNode *> q2;
-        auto merged = new TreeNode(root1->val + root2->val);
-        q.push(merged);
-        q1.push(root1);
-        q2.push(root2);
-        while(!q1.empty() && !q2.empty()){
-            auto node = q.front();
-            auto node1 = q1.front();
-            auto node2 = q2.front();
-            q.pop();
-            q1.pop();
-            q2.pop();
-            auto left1 = node1->left;
-            auto left2 = node2->left;
-            auto right1 = node1->right;
-            auto right2 = node2->right;
-            if(left1 || left2){
-                if(left1 && left2){
-                    node->left = new TreeNode(left1->val + left2->val);
-                    q.push(node->left);
-                    q1.push(left1);
-                    q2.push(left2);
-                }
-                else if(left1 != nullptr){
-                    node->left = left1;
-                }
-                else{
-                    node->left = left2;
-                }
-            }
-            if(right1 || right2){
-                if(right1 && right2){
-                    node->right = new TreeNode(right1->val + right2->val);
-                    q.push(node->right);
-                    q1.push(right1);
-                    q2.push(right2);
-                }
-                else if(right1 != nullptr){
-                    node->right = right1;
-                }
-                else{
-                    node->right = right2;
-                }
-            }
+        else{
+            return root2;
         }
-        return merged;
     }
-};/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+};
+
+//代码随想录的递归，前序遍历
 class Solution {
 public:
     TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
-        if(!root1){
-            return root2;
-        }
-        else if(!root2){
-            return root1;
-        }
+        if(!root1)  return root2;
+        if(!root2)  return root1;
 
-        queue<TreeNode *> q;
-        queue<TreeNode *> q1;
-        queue<TreeNode *> q2;
-        auto merged = new TreeNode(root1->val + root2->val);
-        q.push(merged);
+        root1->val += root2->val;
+        root1->left = mergeTrees(root1->left, root2->left);
+        root1->right = mergeTrees(root1->right, root2->right);
+        return root1;
+    }
+};
+
+//中序遍历
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if(!root1)  return root2;
+        if(!root2)  return root1;
+        root1->left = mergeTrees(root1->left, root2->left);
+        root1->val += root2->val;
+        root1->right = mergeTrees(root1->right, root2->right);
+        return root1;
+    }
+};
+
+//后序遍历
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if(!root1)  return root2;
+        if(!root2)  return root1;
+        root1->right = mergeTrees(root1->right, root2->right);
+        root1->left = mergeTrees(root1->left, root2->left);
+        root1->val += root2->val;
+        return root1;
+    }
+};
+
+//方法二：层序遍历
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if(!root1)  return root2;
+        if(!root2)  return root1;
+        queue<TreeNode*> q1;
+        queue<TreeNode*> q2;
         q1.push(root1);
         q2.push(root2);
-        while(!q1.empty() && !q2.empty()){
-            auto node = q.front();
+        while(!q1.empty()){
             auto node1 = q1.front();
             auto node2 = q2.front();
-            q.pop();
             q1.pop();
             q2.pop();
-            auto left1 = node1->left;
-            auto left2 = node2->left;
-            auto right1 = node1->right;
-            auto right2 = node2->right;
-            if(left1 || left2){
-                if(left1 && left2){
-                    node->left = new TreeNode(left1->val + left2->val);
-                    q.push(node->left);
-                    q1.push(left1);
-                    q2.push(left2);
-                }
-                else if(left1 != nullptr){
-                    node->left = left1;
-                }
-                else{
-                    node->left = left2;
-                }
+            node1->val += node2->val;
+            if(node1->left && node2->left){
+                q1.push(node1->left);
+                q2.push(node2->left);
             }
-            if(right1 || right2){
-                if(right1 && right2){
-                    node->right = new TreeNode(right1->val + right2->val);
-                    q.push(node->right);
-                    q1.push(right1);
-                    q2.push(right2);
-                }
-                else if(right1 != nullptr){
-                    node->right = right1;
-                }
-                else{
-                    node->right = right2;
-                }
+
+            if(node1->right && node2->right){
+                q1.push(node1->right);
+                q2.push(node2->right);
+            }
+
+            if(!node1->left && node2->left){
+                node1->left = node2->left;
+            }
+
+            if(!node1->right && node2->right){
+                node1->right = node2->right;
             }
         }
-        return merged;
+        return root1;
     }
 };
