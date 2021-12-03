@@ -92,3 +92,43 @@ public:
         return ans;
     }
 };
+
+//代码随想录的递归，比我的要好些
+class Solution {
+public:
+    vector<int> ans;
+    TreeNode* pre = nullptr;
+    int count = 0;
+    int maxCount = 0;
+    void dfs(TreeNode* root){
+        if(root == nullptr) return;
+
+        dfs(root->left);
+        if(pre == nullptr){
+            count = 1;
+        }
+        else if(root->val == pre->val){
+            ++count;
+        }
+        else{
+            count = 1;
+        }
+        pre = root;
+
+        if(count == maxCount){
+            ans.push_back(pre->val);
+        }
+        else if(count > maxCount){
+            maxCount = count;
+            ans.clear();
+            ans.push_back(root->val);
+        }
+        dfs(root->right);
+    }
+
+    vector<int> findMode(TreeNode* root) {
+        if(root == nullptr) return {};
+        dfs(root);
+        return ans;
+    }
+};
