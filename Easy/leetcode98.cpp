@@ -39,3 +39,51 @@ public:
         return left && right;
     }
 };
+
+//递归，不过这次不是记录上一个节点的值，而是直接记录上一个节点
+//不用像上一般一样得注意INT_MIN
+class Solution {
+public:
+    TreeNode* pre = nullptr;
+    bool isValidBST(TreeNode* root) {
+        if(root == nullptr) return true;
+
+        bool left = isValidBST(root->left);
+        if(pre == nullptr || pre->val < root->val)  pre = root;
+        else    return false;
+        bool right = isValidBST(root->right);
+        return left && right;
+    }
+};
+
+//方法二：迭代
+//思路：实际上同递归，都是中序遍历，然后记录前一个节点用于对比
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(root == nullptr) return true;
+        TreeNode* pre = nullptr;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty()){
+            TreeNode* node = stk.top();
+            if(node != nullptr){
+                stk.pop();
+                
+                if(node->right)  stk.push(node->right);
+                stk.push(node);
+                stk.push(nullptr);
+                if(node->left) stk.push(node->left);
+            }
+            else{
+                stk.pop();
+                node = stk.top();
+                stk.pop();
+
+                if(pre == nullptr || pre->val < node->val)  pre = node;
+                else return false;
+            }
+        }
+        return true;
+    }
+};
