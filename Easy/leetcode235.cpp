@@ -129,3 +129,24 @@ public:
         }
     }
 };
+
+//迭代
+//思路：其实同上面的递归
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr) return nullptr;
+        while(root){
+            if(root->val > p->val && root->val > q->val){
+                root = root->left;
+            }
+            else if(root->val < p->val && root->val < q->val){
+                root = root->right;
+            }
+            else{
+                break;
+            }
+        }    
+        return root;
+    }
+};
