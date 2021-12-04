@@ -41,3 +41,75 @@ public:
         return root;
     }
 };
+
+//其实可以直接将要删除节点的左子树放到其右子树中最小节点的左节点上
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root == nullptr) return nullptr;
+
+        if(root->val == key){
+            if(root->left == nullptr){
+                return root->right;
+            }
+            else if(root->right == nullptr){
+                return root->left;
+            }
+            else{
+                TreeNode* minNode = root->right;
+                while(minNode->left != nullptr){
+                    minNode = minNode->left;
+                }
+                minNode->left = root->left;
+                return root->right;
+            }
+        }
+        else if(root->val > key){
+            root->left = deleteNode(root->left, key);
+        }
+        else{
+            root->right = deleteNode(root->right, key);
+        }
+        return root;
+    }
+};
+
+//迭代
+//思路：同上面的递归
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root){
+        if(root == nullptr) return nullptr;
+        if(root->right == nullptr)  return root->left;
+        TreeNode* cur = root->right;
+        while(cur->left != nullptr){
+            cur = cur->left;
+        }
+        cur->left = root->left;
+        return root->right;
+    }
+
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root == nullptr) return nullptr;
+        TreeNode* pre = nullptr;
+        TreeNode* cur = root;
+        while(cur != nullptr){
+            if(cur->val == key) break;
+            pre = cur;
+            if(cur->val > key) cur = cur->left;
+            else cur = cur->right;
+        }
+
+        if(pre == nullptr){
+            return deleteNode(cur);
+        }
+
+        if(pre->left != nullptr && pre->left->val == key){
+            pre->left = deleteNode(cur);
+        }
+        else if(pre->right != nullptr && pre->right->val == key){
+            pre->right = deleteNode(cur);
+        }
+        return root;
+    }
+};
