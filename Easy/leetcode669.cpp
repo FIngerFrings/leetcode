@@ -33,3 +33,56 @@ public:
         return root;
     }
 };
+
+//代码随想录递归
+//思路：根据二叉搜索树的性质，如果当前遍历到的节点值大于high，则直接返回递归左节点
+//箱单如果小于low，则返回递归右节点
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int low, int high) {
+        if(root == nullptr) return nullptr;
+
+        if(root->val > high){
+            return trimBST(root->left, low, high);
+        }
+
+        if(root->val < low){
+            return trimBST(root->right, low, high);
+        }
+
+        root->left = trimBST(root->left, low, high);
+        root->right = trimBST(root->right, low, high);
+        return root;
+    }
+};
+
+//方法二：迭代
+//思路：首先将root移动到[low, high]中间，然后剪枝左子树和右子树
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int low, int high) {
+        if(root == nullptr) return nullptr;
+        while(root != nullptr && (root->val > high || root->val < low)){
+            if(root->val > high) root = root->left;
+            else if(root->val < low) root = root->right;
+        }
+
+        TreeNode* cur = root;
+        while(cur != nullptr){
+            while(cur->left != nullptr && cur->left->val < low){
+                cur->left = cur->left->right;
+            }
+            cur = cur->left;
+        }
+
+        cur = root;
+        while(cur != nullptr){
+            while(cur->right != nullptr && cur->right->val > high){
+                cur->right = cur->right->left;
+            }
+            cur = cur->right;
+        }
+
+        return root;
+    }
+};
