@@ -36,17 +36,6 @@ public:
 
 //方法二：反中序遍历
 //思路：在中序遍历过程中就把所得到的值加上，不过得反向中序遍历
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     int sum = 0;
@@ -61,19 +50,27 @@ public:
     }
 };
 
+class Solution {
+public:
+    int sum = 0;
+
+    void dfs(TreeNode* root){
+        if(root == nullptr) return;
+
+        dfs(root->right);
+        root->val += sum;
+        sum = root->val;
+        dfs(root->left);
+    }
+
+    TreeNode* convertBST(TreeNode* root) {
+        dfs(root);
+        return root;
+    }
+};
+
 //方法三：moris遍历
 //思路：略
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     int sum = 0;
@@ -101,6 +98,36 @@ public:
                 sum += node->val;
                 node->val = sum;
                 node = node->left;
+            }
+        }
+        return root;
+    }
+};
+
+//迭代
+class Solution {
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        if(root == nullptr) return nullptr;
+        int pre = 0;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty()){
+            auto node = stk.top();
+            stk.pop();
+            if(node != nullptr){
+                if(node->left) stk.push(node->left);
+
+                stk.push(node);
+                stk.push(nullptr);
+
+                if(node->right) stk.push(node->right);
+            }
+            else{
+                node = stk.top();
+                stk.pop();
+                node->val += pre;
+                pre = node->val;
             }
         }
         return root;
