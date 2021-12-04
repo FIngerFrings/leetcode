@@ -10,7 +10,6 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
@@ -31,16 +30,6 @@ public:
 };
 //方法二：递归（一次遍历）
 //思路：略
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
@@ -62,17 +51,6 @@ public:
 };
 
 //方法三：两次遍历
-//思路：略
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-
 class Solution {
 public:
     vector<TreeNode *> getpath(TreeNode *root, TreeNode *q){
@@ -106,5 +84,48 @@ public:
             }
         }
         return ans;
+    }
+};
+
+//代码随想录递归
+//思路：同不同二叉树的最近公共祖先思路相同，从底层向上层递归，如果一个节点的左子树和右子树都有pq，则该节点是最近公共祖先
+//如果一个节点就是p或者q则直接返回该节点，否则递归该节点的左右孩子
+//但是没有用到二叉搜索树的性质
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr || root == p || root == q)   return root;
+
+        TreeNode* l = lowestCommonAncestor(root->left, p, q);
+        TreeNode* r = lowestCommonAncestor(root->right, p, q);
+
+        if(l != nullptr && r != nullptr){
+            return root;
+        }
+        else if(l != nullptr){
+            return l;
+        }
+        else{
+            return r;
+        }
+        return nullptr;
+    }
+};
+
+//代码随想录根据二叉搜索树性质的递归
+//根据二叉搜索树的性质，pq的最近公共祖先实际上就是遍历过程中第一个值在pq之间的节点
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr) return nullptr;
+        if(root->val > p->val && root->val > q->val){
+            return lowestCommonAncestor(root->left, p, q);
+        }
+        else if(root->val < p->val && root->val < q->val){
+            return lowestCommonAncestor(root->right, p, q);
+        }
+        else{
+            return root;
+        }
     }
 };
