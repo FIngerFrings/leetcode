@@ -63,6 +63,32 @@ public:
     }
 };
 
+//回溯优化
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+
+    void backtracking(int n, int k, int cur){
+        if(path.size() == k){
+            ans.push_back(path);
+            return;
+        }
+
+        for(int i = cur; i <= n - (k - path.size()) + 1; i++){
+            path.push_back(i);
+            backtracking(n, k, i + 1);
+            path.pop_back();
+        }
+        return;
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+        backtracking(n, k, 1);
+        return ans;
+    }
+};
+
 //方法二：非递归（字典序法）实现组合型枚举，
 //思路：实际上就和leetcode78中的mask解法一样，只不过这里因为限定了k个数，所以mask并不能像leetcode78中一样直接+1，而是有一定规律的
 //规律如下：表示数组的二进制数的最低位为1时，如果末尾有t个连续的1，则直接将倒数第t位的1和倒数第t+1位的0替换
