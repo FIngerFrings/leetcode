@@ -35,3 +35,70 @@ public:
         return ans;
     }
 };
+
+//代码随想录回溯
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+
+    void backtracking(vector<int> &candidates, int target, int sum, int cur){
+        if(sum > target){
+            return;
+        }
+
+        if(sum == target){
+            ans.push_back(path);
+            return;
+        }
+
+        for(int i = cur; i < candidates.size(); i++){
+            sum += candidates[i];
+            path.push_back(candidates[i]);
+            backtracking(candidates, target, sum, i);
+            sum -= candidates[i];
+            path.pop_back();
+        }
+        return;
+
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        backtracking(candidates, target, 0, 0);
+        return ans;
+    }
+};
+
+//回溯+剪枝
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+
+    void backtracking(vector<int> &candidates, int target, int sum, int cur){
+        if(sum > target){
+            return;
+        }
+
+        if(sum == target){
+            ans.push_back(path);
+            return;
+        }
+
+        for(int i = cur; i < candidates.size() && sum + candidates[i] <= target; i++){
+            sum += candidates[i];
+            path.push_back(candidates[i]);
+            backtracking(candidates, target, sum, i);
+            sum -= candidates[i];
+            path.pop_back();
+        }
+        return;
+
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        backtracking(candidates, target, 0, 0);
+        return ans;
+    }
+};
