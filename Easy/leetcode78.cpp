@@ -51,3 +51,29 @@ public:
         return result;
     }
 };
+
+//代码随想录回溯
+class Solution {
+    vector<vector<int>> ans;
+    vector<int> path;
+
+    void backtracking(vector<int>& nums, int l){
+        ans.push_back(path);
+        if(l >= nums.size())    return;
+
+        for(int i = l; i < nums.size(); i++){
+            path.push_back(nums[i]);
+            backtracking(nums, i + 1);
+            path.pop_back();
+        }
+        return;
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        ans.clear();
+        path.clear();
+        backtracking(nums, 0);
+        return ans;
+    }
+};
