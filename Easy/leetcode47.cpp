@@ -38,3 +38,40 @@ public:
         return ans;
     }
 };
+
+//代码随想录回溯
+class Solution {
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<bool> vis;
+
+    void backtracking(vector<int>& nums){
+        if(path.size() == nums.size()){
+            ans.push_back(path);
+            return;
+        }
+
+        for(int i = 0; i < nums.size(); i++){
+            if((i > 0 && nums[i] == nums[i-1] && !vis[i-1]) || vis[i]){
+                continue;
+            }
+
+            path.push_back(nums[i]);
+            vis[i] = true;
+            backtracking(nums);
+            vis[i] = false;
+            path.pop_back();
+        }
+        return;
+    }
+
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        ans.clear();
+        path.clear();
+        vis.resize(nums.size(), false);
+        sort(nums.begin(), nums.end());
+        backtracking(nums);
+        return ans;
+    }
+};
