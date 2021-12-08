@@ -63,3 +63,56 @@ public:
     }
 };
 
+//代码随想录回溯
+class Solution {
+    bool isValid(int r, int c, char k, vector<vector<char>>& board){
+        for(int i = 0; i < 9; i++){
+            if(board[r][i] == k){
+                return false;
+            }
+        }
+
+        for(int i = 0; i < 9; i++){
+            if(board[i][c] == k){
+                return false;
+            }
+        }
+
+        int sr = (r / 3) * 3;
+        int sc = (c / 3) * 3;
+        for(int i = sr; i < sr + 3; i++){
+            for(int j = sc; j < sc + 3; j++){
+                if(board[i][j] == k){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    bool backtracking(vector<vector<char>>& board){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board[i][j] != '.'){
+                    continue;
+                }
+
+                for(char k = '1'; k <= '9'; k++){
+                    if(isValid(i, j, k, board)){
+                        board[i][j] = k;
+                        if(backtracking(board)) return true;
+                        board[i][j] = '.';
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        backtracking(board);
+    }
+};
