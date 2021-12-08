@@ -55,3 +55,53 @@ public:
 //第一个皇后有 N 列可以选择，第二个皇后最多有 N-1 列可以选择，第三个皇后最多有 N-2 列可以选择（如果考虑到不能在同一条斜线上，可能的选择数量更少），
 //因此所有可能的情况不会超过 N! 种，遍历这些情况的时间复杂度是 O(N!)。
 
+//代码随想录回溯
+class Solution {
+    vector<vector<string>> ans;
+
+    bool isValid(int row, int cow, vector<string>& board){
+        for(int i = 0; i < row; i++){
+            if(board[i][cow] == 'Q'){
+                return false;
+            }
+        }
+
+        for(int i = row - 1, j = cow - 1; i >= 0 && j >= 0; i--, j--){
+            if(board[i][j] == 'Q'){
+                return false;
+            }
+        }
+
+        for(int i = row - 1, j = cow + 1; i >= 0 && j < board.size(); i--, j++){
+            if(board[i][j] == 'Q'){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    void backtracking(int n, int row, vector<string>& board){
+        if(row == n){
+            ans.push_back(board);
+            return;
+        }
+
+        for(int cow = 0; cow < n; cow++){
+            if(isValid(row, cow, board)){
+                board[row][cow] = 'Q';
+                backtracking(n, row + 1, board);
+                board[row][cow] = '.';
+            }
+        }
+        return;
+    }
+
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n, string(n, '.'));
+        ans.clear();
+        backtracking(n, 0, board);
+        return ans;
+    }
+};
