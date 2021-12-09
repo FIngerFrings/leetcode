@@ -58,6 +58,30 @@ public:
     }
 };
 
+//代码随想录动态规划
+//对于一个点来说要么是山峰要么是山谷
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        vector<vector<int>> dp(nums.size(), vector<int>(2));
+        dp[0][0] = 1;
+        dp[0][1] = 1;
+        for(int i = 1; i < nums.size(); i++){
+            dp[i][0] = 1;
+            dp[i][1] = 1;
+
+            for(int j = 0; j < i; j++){
+                if(nums[j] > nums[i]) dp[i][1] = max(dp[i][1], dp[j][0] + 1);
+            }
+
+            for(int j = 0; j < i; j++){
+                if(nums[j] < nums[i]) dp[i][0] = max(dp[i][0], dp[j][1] + 1);
+            }
+        }
+        return max(dp[nums.size() - 1][0], dp[nums.size() - 1][1]);
+    }
+};
+
 //方法二：贪心算法
 //思路：实际上我们只需要计算有多少个峰和谷就可以算法最长子序列了
 class Solution {
@@ -75,5 +99,22 @@ public:
             }
         }
         return ret;
+    }
+};
+
+//代码随想录贪心
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int ans = 1;
+        int curdiff = 0, prediff = 0;
+        for(int i = 0; i < nums.size() - 1; i++){
+            curdiff = nums[i + 1] - nums[i];
+            if((curdiff > 0 && prediff <= 0) || (curdiff < 0 && prediff >= 0)){
+                ++ans;
+                prediff = curdiff;
+            }
+        }
+        return ans;
     }
 };
