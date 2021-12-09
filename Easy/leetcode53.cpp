@@ -86,3 +86,22 @@ public:
         return get(nums, 0, nums.size() - 1).mSum;
     }
 };
+
+//方法四：代码随想录贪心
+//思路：如果count小于0，则重新从0开始计数
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int ans = INT_MIN;
+        int count = 0;
+        for(int i = 0; i < nums.size(); i++){
+            count += nums[i];
+            if(count > ans){
+                ans = count;
+            }
+
+            if(count < 0) count = 0;
+        }
+        return ans;
+    }
+};
