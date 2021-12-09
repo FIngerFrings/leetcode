@@ -43,3 +43,20 @@ public:
 //这道题算是一道经典的贪心算法，贪心算法的思想在于每一次都选择局部最优的选择，在这一题中就是对于某个小孩，
 //我们选择能满足其要求的最小的饼干，所以首先需要对小孩和饼干进行排序，先分配要求和大小比较小的小孩和饼干。
 //总结：这道题你主要需要知道的一个点就是：为了能让尽可能多的孩子获得饼干，应该要给胃口小的孩子分配尽可能小同时又能满足其胃口的饼干
+
+//上面是先喂饱小的，也可以先喂饱大的
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        int ans = 0;
+        for(int i = g.size() - 1, j = s.size() - 1; i >= 0 && j >= 0; i--){
+            if(s[j] >= g[i]){
+                ++ans;
+                --j;
+            }
+        }
+        return ans;
+    }
+};
