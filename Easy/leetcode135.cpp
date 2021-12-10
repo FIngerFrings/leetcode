@@ -49,6 +49,27 @@ public:
 //你可以拿的比他多，同时如果你比你左边小孩评分高，在第一次遍历的时候你就会拿的比他多，所以第二次遍历再多拿几个糖果也是比他多。
 //如果你比你左边的小孩评分低，就算你这时候多拿了糖果，从而导致比他糖果多，等下轮到他的时候也会多给几个糖果给他。
 //这道题贪心的点我觉得只是在遍历过程中如果旁边的人评分比你高，那么只会给你比他多1块糖果
+//贪心
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        vector<int> nums(n, 1);
+        int ans = 0;
+        for(int i = 1; i < n; i++){
+            if(ratings[i] > ratings[i-1] && nums[i] <= nums[i-1]){
+                nums[i] = nums[i-1] + 1;
+            }
+        }
+
+        for(int i = n - 2; i >= 0; i--){
+            if(ratings[i] > ratings[i+1] && nums[i] <= nums[i+1]){
+                nums[i] = nums[i+1] + 1;
+            }
+        }
+        return accumulate(nums.begin(), nums.end(), 0);
+    }
+};
 
 //方法二：常数空间遍历
 //思路：根据贪心的原则，糖果应该要少给，且从1开始累计，每次要么比相邻的同学多给一个，要么重新置为1
