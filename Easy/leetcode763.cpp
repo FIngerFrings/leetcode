@@ -26,3 +26,24 @@ public:
     }
 };
 //这道题贪心的地方在于每次都选择可能的最短片段。并且在处理数组前，统计一遍信息（如频率、个数、第一次出现位置、最后一次出现位置等）可能可以使题目难度大幅降低。  
+
+//代码随想录贪心，更好一点
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        vector<int> nums(26, 0);
+        for(int i = 0; i < s.size(); i++){
+            nums[s[i]-'a'] = i;
+        }
+        vector<int> ans;
+        int l = 0, r = 0;
+        for(int i = 0; i < s.size(); i++){
+            r = max(r, nums[s[i]-'a']);
+            if(i == r){
+                ans.push_back(r - l + 1);
+                l = i + 1;
+            }   
+        }
+        return ans;
+    }
+};
