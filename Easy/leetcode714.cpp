@@ -62,3 +62,25 @@ public:
         return profit;
     }
 };
+
+//代码随想录贪心
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        int minPrice = prices[0];
+        int ans = 0;
+        for(int i = 1; i < prices.size(); i++){
+            if(prices[i] < minPrice) minPrice = prices[i];
+
+            if(prices[i] >= minPrice && prices[i] <= minPrice + fee){
+                continue;
+            }
+
+            if(prices[i] > minPrice + fee){
+                ans += prices[i] - minPrice - fee;
+                minPrice = prices[i] - fee;
+            }
+        }
+        return ans;
+    }
+};
