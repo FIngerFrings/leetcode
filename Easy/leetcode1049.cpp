@@ -7,6 +7,7 @@
  */
 //方法一：动态规划
 //思路：实际上就是要将石头分为重量相差不大的两份
+//分成两堆后，分别得到两堆的重量和，然后相减就可以得到两堆石头互相粉碎最后得到的重量
 class Solution {
 public:
     int lastStoneWeightII(vector<int>& stones) {
