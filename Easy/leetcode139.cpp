@@ -24,3 +24,50 @@ public:
 
     }
 };
+
+//完全背包问题求排列
+//没有压缩空间的动态规划
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = wordDict.size();
+        int m = s.size();
+        vector<vector<bool>> dp(n+1, vector<bool>(m+1, false));
+        dp[0][0] = true;
+        for(int j = 0; j <= m; j++){
+            for(int i = 1; i <= n; i++){
+                int l = wordDict[i-1].size();
+                if(j >= l && s.substr(j-l, l) == wordDict[i-1]){
+                    dp[i][j] = dp[i-1][j] || dp[n][j-l];
+                }
+                else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[n][m];
+    }
+};
+
+//压缩空间的动态规划
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = wordDict.size();
+        int m = s.size();
+        vector<bool> dp(m+1, false);
+        dp[0] = true;
+        for(int j = 0; j <= m; j++){
+            for(int i = 1; i <= n; i++){
+                int l = wordDict[i-1].size();
+                if(j >= l && s.substr(j-l, l) == wordDict[i-1]){
+                    dp[j] = dp[j] || dp[j-l];
+                }
+                else{
+                    dp[j] = dp[j];
+                }
+            }
+        }
+        return dp[m];
+    }
+};
