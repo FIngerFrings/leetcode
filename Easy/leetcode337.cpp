@@ -51,9 +51,9 @@ public:
 class Solution {
 public:
     vector<int> robhelper(TreeNode* root){
-        if(root == nullptr) vector<int>{0, 0};
-        vector<int> leftVal = (root->left == nullptr) ? vector<int>{0, 0} : robhelper(root->left);
-        vector<int> rightVal = (root->right == nullptr) ? vector<int>{0, 0} : robhelper(root->right);
+        if(root == nullptr) return vector<int>{0, 0};
+        vector<int> leftVal = robhelper(root->left);
+        vector<int> rightVal = robhelper(root->right);
         int val1 = root->val + leftVal[1] + rightVal[1];
         int val2 = max(leftVal[0], leftVal[1]) + max(rightVal[0], rightVal[1]);
         return vector<int>{val1, val2}; 
