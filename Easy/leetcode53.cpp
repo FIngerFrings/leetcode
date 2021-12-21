@@ -105,3 +105,17 @@ public:
         return ans;
     }
 };
+
+//自己写的贪心
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int count = nums[0];
+        int ans = nums[0];
+        for(int i = 1; i < nums.size(); i++){
+            count = max(count + nums[i], nums[i]);
+            if(count > ans) ans = count;
+        }
+        return ans;
+    }
+};
