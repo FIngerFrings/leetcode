@@ -107,3 +107,69 @@ public:
 
     }
 };
+
+//动态规划
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        vector<int> minLeft(n);
+        vector<int> minRight(n);
+
+        minLeft[0] = -1;
+        for(int i = 1; i < n; i++){
+            int t = i - 1;
+            while(t >= 0 && heights[t] >= heights[i]) t = minLeft[t];
+            minLeft[i] = t;
+        }
+
+        minRight[n-1] = n;
+        for(int i = n-2; i >= 0; i--){
+            int t = i + 1;
+            while(t < n && heights[t] >= heights[i]) t = minRight[t];
+            minRight[i] = t;
+        }
+
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            int sum = (minRight[i] - minLeft[i] - 1) * heights[i];
+            ans = max(ans, sum);
+        }
+        return ans;
+    }
+};
+
+//单调栈
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        heights.insert(heights.begin(), 0);
+        heights.push_back(0);
+        int n = heights.size();
+        stack<int> stk;
+        stk.push(0);
+        int ans = 0;
+        for(int i = 1; i < n; i++){
+            if(!stk.empty() && heights[i] > heights[stk.top()]){
+                stk.push(i);
+            }
+            else if(!stk.empty() && heights[i] == heights[stk.top()]){
+                stk.pop();
+                stk.push(i);
+            }
+            else{
+                while(!stk.empty() && heights[i] < heights[stk.top()]){
+                    int mid = stk.top();
+                    stk.pop();
+                    if(!stk.empty()){
+                        int w = i - stk.top() - 1;
+                        int h = heights[mid];
+                        ans = max(ans, w * h);
+                    }
+                }
+                stk.push(i);
+            }
+        }
+        return ans;
+    } 
+};
