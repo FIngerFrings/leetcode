@@ -127,3 +127,27 @@ public:
     }
 };
 
+//代码随想录单调栈
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        vector<int> ans(n, -1);
+        unordered_map<int, int> hash;
+        for(int i = 0; i < n; i++){
+            hash[nums1[i]] = i;
+        }
+        stack<int> stk;
+        stk.push(0);
+        for(int i = 1; i < nums2.size(); i++){
+            while(!stk.empty() && nums2[i] > nums2[stk.top()]){
+                if(hash.find(nums2[stk.top()]) != hash.end()){
+                    ans[hash[nums2[stk.top()]]] = nums2[i];
+                }
+                stk.pop();
+            }
+            stk.push(i);
+        }
+        return ans;
+    }
+};
