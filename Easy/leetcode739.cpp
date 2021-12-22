@@ -74,6 +74,26 @@ public:
     }
 };
 
+//后来自己写的
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        if(n == 1) return vector<int>{0};
+        vector<int> ans(n, 0);
+        stack<pair<int, int>> stk;
+        stk.push(pair<int, int>(0, temperatures[0]));
+        for(int i = 1; i < n; i++){
+            while(!stk.empty() && temperatures[i] > stk.top().second){
+                ans[stk.top().first] = i - stk.top().first;
+                stk.pop();
+            }
+            stk.push(pair<int, int>(i, temperatures[i]));
+        }
+        return ans;
+    }
+};
+
 //方法三：单调栈
 //思路：用一个栈来保存没有找到第一个比它温度高的下标，从前往后遍历数组
 //首先肯定会压入第一天的下标，因为现在还不知道距离第一个温度比他高的日子是什么时候
