@@ -36,8 +36,9 @@ public:
     }
 };
 
-//方法三：双指针
+//双指针
 //思路：类似归并排序，先找到正负的分界点，然后分别向前向后遍历，比较平方后的大小，然后插入数组中
+//实际上和上面一种双指针是一样的，不过方向不同
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
