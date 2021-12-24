@@ -14,3 +14,44 @@ public:
         return false;
     }
 };
+
+//方法二：内置函数
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        int ans = sqrt(num);
+        return ans * ans == num;
+    }
+};
+
+//方法三：暴力
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        long long x = 1;
+        while(x * x <= num){
+            if(x * x == num){
+                return true;
+            }
+            ++x;
+        }
+        return false;
+    }
+};
+
+//方法四：牛顿迭代法
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        double c = num, x0 = num;
+        while(true){
+            double xi = 0.5 * (x0 + c / x0);
+            if(abs(xi - x0) <= 1e-7){
+                break;
+            }
+            x0 = xi;
+        }
+        x0 = (long long)x0;
+        return x0 * x0 == num;
+    }
+};
