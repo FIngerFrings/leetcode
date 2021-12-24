@@ -3,6 +3,7 @@
 *不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
 *元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
 */
+//方法一：双指针
 //我的答案，方法同283，只是283中是将0移到后面，这里指定了val，所以只要加一个判断就行
 class Solution {
 public:
@@ -24,7 +25,6 @@ public:
     }
 };
 //我的方法可以改进，实际上新的数组长度就是left的值
-//该方法空间复杂度很小，但是耗时较大（为啥较高我也不知道）
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
@@ -94,7 +94,7 @@ public:
     }
 };
 
-//暴力解法
+//方法二：暴力解法
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
