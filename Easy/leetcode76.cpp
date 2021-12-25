@@ -36,3 +36,35 @@ public:
 
     }
 };
+
+//自己写的滑动窗口
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int minl = 0;
+        int l = 0;
+        int len = s.size()+1, k = 0;
+        unordered_map<char, int> hash;
+        for(char c : t){
+            ++hash[c];
+        }
+        for(int r = 0; r < s.size(); r++){
+            if(hash.find(s[r]) != hash.end() && hash[s[r]]-- > 0){
+                ++k;
+            }
+
+            while(k == t.size()){
+                if(r - l + 1 < len){
+                    minl = l;
+                    len = r - l + 1;
+                }
+
+                if(hash.find(s[l]) != hash.end() && ++hash[s[l]] > 0){
+                    --k;
+                }
+                ++l;
+            }
+        }
+        return len > s.size() ? "" : s.substr(minl, len);
+    }
+};
