@@ -44,16 +44,6 @@ public:
 
 //方法二：递归
 //思路：自己意会
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
@@ -68,19 +58,9 @@ public:
     }
 };
 
-//方法二：迭代
+//方法三：迭代
 //思路：其实思路和暴力法差不多，但是代码却好很多
 //这种在链表之前加个新节点的方法需要学习
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
