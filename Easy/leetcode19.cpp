@@ -40,16 +40,6 @@ public:
 
 //方法二：栈
 //思路：使用栈将所有节点放入，然后依次弹出栈，弹出n个节点后，栈顶节点就是要删除节点的前面一个节点
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
@@ -77,16 +67,6 @@ public:
 //思路：可以设定两个指针，一个指针指向哑节点，一个指针指向头节点
 //快指针先移动n步，然后两个指针一起移动，当快指针到达链表尾时
 //满指针到达倒数n个节点的前面那个节点
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
