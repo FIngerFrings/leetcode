@@ -50,14 +50,6 @@ public:
 //方法二：双指针
 //思路：使用快慢指针判断是否有环，如果有环，则将fast重置为head，然后slow和fast都一步一步跳，相遇的地方就是入环的节点
 //证明见官方解答或markdown笔记
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
@@ -85,14 +77,6 @@ public:
 };
 
 //官方比较间接的双指针
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
