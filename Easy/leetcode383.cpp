@@ -23,3 +23,19 @@ public:
 
     }
 };
+
+//用数组当哈希表
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        vector<int> words(26);
+        for(char c : magazine){
+            ++words[c-'a'];
+        }
+
+        for(char c : ransomNote){
+            if(--words[c-'a'] < 0) return false;
+        }
+        return true;
+    }
+};
